@@ -705,4 +705,36 @@ dependencies: \
   ../../../cinder_0.9.2_mac/include/cinder/app/RendererGl.h \
   ../../../cinder_0.9.2_mac/include/cinder/app/Renderer.h \
   ../../../cinder_0.9.2_mac/include/cinder/gl/platform.h \
-  ../../../cinder_0.9.2_mac/include/cinder/gl/gl.h
+  ../../../cinder_0.9.2_mac/include/cinder/gl/gl.h \
+  /usr/local/Cellar/opencv/4.1.2/include/opencv4/opencv2/core/core.hpp \
+  /usr/local/Cellar/opencv/4.1.2/include/opencv4/opencv2/core.hpp \
+  /usr/local/Cellar/opencv/4.1.2/include/opencv4/opencv2/core/cvdef.h \
+  /usr/local/Cellar/opencv/4.1.2/include/opencv4/opencv2/core/hal/interface.h \
+  /usr/local/Cellar/opencv/4.1.2/include/opencv4/opencv2/core/cv_cpu_dispatch.h \
+  /usr/local/Cellar/opencv/4.1.2/include/opencv4/opencv2/core/version.hpp \
+  /usr/local/Cellar/opencv/4.1.2/include/opencv4/opencv2/core/base.hpp \
+  /usr/local/Cellar/opencv/4.1.2/include/opencv4/opencv2/opencv_modules.hpp \
+  /usr/local/Cellar/opencv/4.1.2/include/opencv4/opencv2/core/cvstd.hpp \
+  /usr/local/Cellar/opencv/4.1.2/include/opencv4/opencv2/core/cvstd_wrapper.hpp \
+  /usr/local/Cellar/opencv/4.1.2/include/opencv4/opencv2/core/neon_utils.hpp \
+  /usr/local/Cellar/opencv/4.1.2/include/opencv4/opencv2/core/vsx_utils.hpp \
+  /usr/local/Cellar/opencv/4.1.2/include/opencv4/opencv2/core/check.hpp \
+  /usr/local/Cellar/opencv/4.1.2/include/opencv4/opencv2/core/traits.hpp \
+  /usr/local/Cellar/opencv/4.1.2/include/opencv4/opencv2/core/matx.hpp \
+  /usr/local/Cellar/opencv/4.1.2/include/opencv4/opencv2/core/saturate.hpp \
+  /usr/local/Cellar/opencv/4.1.2/include/opencv4/opencv2/core/fast_math.hpp \
+  /usr/local/Cellar/opencv/4.1.2/include/opencv4/opencv2/core/types.hpp \
+  /usr/local/Cellar/opencv/4.1.2/include/opencv4/opencv2/core/mat.hpp \
+  /usr/local/Cellar/opencv/4.1.2/include/opencv4/opencv2/core/bufferpool.hpp \
+  /usr/local/Cellar/opencv/4.1.2/include/opencv4/opencv2/core/mat.inl.hpp \
+  /usr/local/Cellar/opencv/4.1.2/include/opencv4/opencv2/core/persistence.hpp \
+  /usr/local/Cellar/opencv/4.1.2/include/opencv4/opencv2/core/operations.hpp \
+  /usr/local/Cellar/opencv/4.1.2/include/opencv4/opencv2/core/cvstd.inl.hpp \
+  /usr/local/Cellar/opencv/4.1.2/include/opencv4/opencv2/core/utility.hpp \
+  /usr/local/Cellar/opencv/4.1.2/include/opencv4/opencv2/core/optim.hpp \
+  /usr/local/Cellar/opencv/4.1.2/include/opencv4/opencv2/core/ovx.hpp \
+  /usr/local/Cellar/opencv/4.1.2/include/opencv4/opencv2/imgproc/imgproc.hpp \
+  /usr/local/Cellar/opencv/4.1.2/include/opencv4/opencv2/imgproc.hpp \
+  /usr/local/Cellar/opencv/4.1.2/include/opencv4/opencv2/video/tracking.hpp \
+  /Users/ericmiao/Desktop/School/MotionCapture/CreativeMotionCapture/CreativeMotionCaptureHelloWorld/xcode/CinderOpenCV.h \
+  ../../../cinder_0.9.2_mac/include/cinder/ImageIo.h

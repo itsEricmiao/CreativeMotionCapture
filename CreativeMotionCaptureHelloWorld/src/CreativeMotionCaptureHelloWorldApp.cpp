@@ -2,6 +2,13 @@
 #include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"
 
+
+#include <opencv2/core/core.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2/video/tracking.hpp>
+
+#include "CinderOpenCV.h"
+
 using namespace ci;
 using namespace ci::app;
 using namespace std;
