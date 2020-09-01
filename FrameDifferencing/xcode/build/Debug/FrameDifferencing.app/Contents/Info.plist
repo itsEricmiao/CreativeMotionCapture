@@ -44,6 +44,8 @@
 	<string>11E708</string>
 	<key>LSMinimumSystemVersion</key>
 	<string>10.8</string>
+	<key>NSCameraUsageDescription</key>
+	<string>This Application uses the webcam for motion capture.</string>
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright © 2015 __MyCompanyName__. All rights reserved.</string>
 	<key>NSMainNibFile</key>
