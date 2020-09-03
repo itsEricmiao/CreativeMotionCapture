@@ -1056,4 +1056,5 @@ dependencies: \
   ../../../cinder_0.9.2_mac/include/asio/impl/write_at.hpp \
   ../../../cinder_0.9.2_mac/include/cinder/Buffer.h \
   /Users/ericmiao/Desktop/School/MotionCapture/CreativeMotionCapture/FrameDifferencing/xcode/CinderOpenCV.h \
-  ../../../cinder_0.9.2_mac/include/cinder/ImageIo.h
+  ../../../cinder_0.9.2_mac/include/cinder/ImageIo.h \
+  /Users/ericmiao/Desktop/School/MotionCapture/CreativeMotionCapture/FrameDifferencing/xcode/Squares.hpp

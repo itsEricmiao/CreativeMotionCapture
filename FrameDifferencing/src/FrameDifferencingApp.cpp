@@ -30,7 +30,6 @@
  For your project, you can probably start with creating the squares of the data without further information/lecture
  
  For the background subtraction, we will need the lecture/explanation to move forward.
- 
  */
 
 
@@ -55,6 +54,9 @@
 #include <math.h>
 
 #include "CinderOpenCV.h"
+#include "Squares.hpp"
+#include <vector>
+
 
 using namespace ci;
 using namespace ci::app;
@@ -62,9 +64,9 @@ using namespace std;
 
 class FrameDifferencingApp : public App {
   public:
+    char keyPressed;
     void setup() override;
     void keyDown( KeyEvent event ) override;
-
     void update() override;
     void draw() override;
     
@@ -81,6 +83,9 @@ class FrameDifferencingApp : public App {
     
 };
 
+
+
+
 //initialization
 void FrameDifferencingApp::setup()
 {
@@ -93,10 +98,12 @@ void FrameDifferencingApp::setup()
     {
         CI_LOG_EXCEPTION( "Failed to init capture ", exc );
     }
-    
+
     mPrevFrame.data = NULL;
     mFrameDifference.data = NULL;
-
+    mCapture = Capture::create(640, 480); //first default camera
+    mCapture->start();
+    
 }
 
 void FrameDifferencingApp::keyDown( KeyEvent event )
@@ -104,11 +111,27 @@ void FrameDifferencingApp::keyDown( KeyEvent event )
     //TODO: save the current frame as the background image when user hits a key
     
     //eg:
-    if(event.getChar() == ' ')
+    if(event.getChar() == 'a')
     {
-        //TODO: do a thing. Like save the current frame.
+        keyPressed = 'a';
+        cout <<"Making 10x10 Squares"<<endl;
     }
-
+    
+    if(event.getChar() == 'b')
+    {
+        keyPressed = 'b';
+        cout <<"Making 25x25 Squares"<<endl;
+    }
+    
+    if(event.getChar() == 'c')
+    {
+        keyPressed = 'c';
+        cout <<"Making 50x50 Squares"<<endl;
+    }
+    if(event.getChar() == 'x')
+    {
+        keyPressed = 'x';
+    }
 }
 
 void FrameDifferencingApp::update()
@@ -125,13 +148,13 @@ void FrameDifferencingApp::update()
     
     //do the frame-differencing
     frameDifference(mFrameDifference);
+//    mFrameDifference.at<uint8_t>();
 }
 
 
 //find the difference between 2 frames + some useful image processing
 void FrameDifferencingApp::frameDifference(cv::Mat &outputImg)
 {
-    
     outputImg.data = NULL;
     if(!mSurface) return;
 
@@ -165,29 +188,78 @@ void FrameDifferencingApp::frameDifference(cv::Mat &outputImg)
 //        maxval – maximum value to use with the THRESH_BINARY and THRESH_BINARY_INV thresholding types.
 //        type – thresholding type (see the details below).
         cv::threshold(outputImg, outputImg, 25, 255, cv::THRESH_BINARY);
-
     }
     
     mPrevFrame = curFrame;
 }
 
+
+
 void FrameDifferencingApp::draw()
 {
     gl::clear( Color( 0, 0, 0 ) );
-
-    gl::color( 1, 1, 1, 1 );
-//
-//    if( mTexture )
-//    {
-//        gl::draw( mTexture );
-//    }
+    gl::color( 1, 1, 1, 1);
     
-    //if the frame difference isn't null, draw it.
-    if( mFrameDifference.data )
-    {
-        gl::draw( gl::Texture::create(fromOcv(mFrameDifference) ) );
+    
+    if (keyPressed == 'a'){
+        Squares s(10);
+        vector<vector<double>> allPos= s.getVector();
+        for(int i = 0; i < allPos.size(); i++){
+            Rectf curSquare = Rectf(allPos[i][0],allPos[i][1],allPos[i][2],allPos[i][3]);
+            double r1 = ((double) rand() / (RAND_MAX));
+            double r2 = ((double) rand() / (RAND_MAX));
+            double r3 = ((double) rand() / (RAND_MAX));
+            gl::color( r1, r2, r3, 0.5 );
+            gl::drawSolidRect(curSquare);
+        }
+        
+
+    }
+    if(keyPressed == 'b'){
+        Squares s(25);
+        vector<vector<double>> allPos= s.getVector();
+        for(int i = 0; i < allPos.size(); i++){
+            Rectf curSquare = Rectf(allPos[i][0],allPos[i][1],allPos[i][2],allPos[i][3]);
+            double r1 = ((double) rand() / (RAND_MAX));
+            double r2 = ((double) rand() / (RAND_MAX));
+            double r3 = ((double) rand() / (RAND_MAX));
+            gl::color( r1, r2, r3, 0.5 );
+            gl::drawSolidRect(curSquare);
+        }
     }
     
+    
+    if(keyPressed == 'c'){
+        Squares s(50);
+        vector<vector<double>> allPos= s.getVector();
+        for(int i = 0; i < allPos.size(); i++){
+            Rectf curSquare = Rectf(allPos[i][0],allPos[i][1],allPos[i][2],allPos[i][3]);
+
+            double r1 = ((double) rand() / (RAND_MAX));
+            double r2 = ((double) rand() / (RAND_MAX));
+            double r3 = ((double) rand() / (RAND_MAX));
+            gl::color( r1, r2, r3, 0.5 );
+            gl::drawSolidRect(curSquare);
+    }
+        if(keyPressed == 'x'){
+            
+            
+        }
+    }
+    
+    if( mTexture )
+    {
+        gl::draw( mTexture );
+    }
+    
+//    if the frame difference isn't null, draw it.
+    if( mFrameDifference.data )
+    {
+        gl::draw( gl::Texture::create(fromOcv(mFrameDifference) ));
+    }
+//
+    
 }
+
 
 CINDER_APP( FrameDifferencingApp, RendererGl )

@@ -28,10 +28,12 @@
 	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+	<key>CODE_SIGNING_ALLOWED </key>
+	<string>NO</string>
 	<key>DTCompiler</key>
 	<string>com.apple.compilers.llvm.clang.1_0</string>
 	<key>DTPlatformBuild</key>
-	<string>11E708</string>
+	<string>11E801a</string>
 	<key>DTPlatformVersion</key>
 	<string>GM</string>
 	<key>DTSDKBuild</key>
@@ -39,11 +41,13 @@
 	<key>DTSDKName</key>
 	<string>macosx10.15</string>
 	<key>DTXcode</key>
-	<string>1160</string>
+	<string>1170</string>
 	<key>DTXcodeBuild</key>
-	<string>11E708</string>
+	<string>11E801a</string>
+	<key>LSApplicationCategoryType</key>
+	<string>public.app-category.developer-tools</string>
 	<key>LSMinimumSystemVersion</key>
-	<string>10.8</string>
+	<string>10.15</string>
 	<key>NSCameraUsageDescription</key>
 	<string>This Application uses the webcam for motion capture.</string>
 	<key>NSHumanReadableCopyright</key>
