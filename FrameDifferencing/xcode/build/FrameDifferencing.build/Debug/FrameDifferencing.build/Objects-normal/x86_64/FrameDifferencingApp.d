@@ -1057,4 +1057,5 @@ dependencies: \
   ../../../cinder_0.9.2_mac/include/cinder/Buffer.h \
   /Users/ericmiao/Desktop/School/MotionCapture/CreativeMotionCapture/FrameDifferencing/xcode/CinderOpenCV.h \
   ../../../cinder_0.9.2_mac/include/cinder/ImageIo.h \
-  /Users/ericmiao/Desktop/School/MotionCapture/CreativeMotionCapture/FrameDifferencing/xcode/Squares.hpp
+  /Users/ericmiao/Desktop/School/MotionCapture/CreativeMotionCapture/FrameDifferencing/xcode/Squares.hpp \
+  /Users/ericmiao/Desktop/School/MotionCapture/CreativeMotionCapture/FrameDifferencing/xcode/Generator.hpp

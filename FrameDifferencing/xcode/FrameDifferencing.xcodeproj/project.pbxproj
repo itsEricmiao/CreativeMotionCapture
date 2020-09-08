@@ -18,6 +18,9 @@
 		00B9955B1B128DF400A5C623 /* IOSurface.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00B995591B128DF400A5C623 /* IOSurface.framework */; };
 		5323E6B20EAFCA74003A9687 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5323E6B10EAFCA74003A9687 /* CoreVideo.framework */; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		A70881E02507325C006494D6 /* Generator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A70881DE2507325C006494D6 /* Generator.cpp */; };
+		A70881E225073393006494D6 /* Squares.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A70881E125073393006494D6 /* Squares.cpp */; };
+		A70881E4250735A3006494D6 /* Generator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A70881E3250735A3006494D6 /* Generator.cpp */; };
 		A9CF70F513754050B67ED0C8 /* CinderApp.icns in Resources */ = {isa = PBXBuildFile; fileRef = BFE116F3F70C4780A82E61C9 /* CinderApp.icns */; };
 		D56F36E7D61B4E1B956FD43B /* Osc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2A4C8410F1E4543BA4CFE4C /* Osc.cpp */; };
 		F32BB57ED9CA41BDBA6C639B /* FrameDifferencingApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6EE51D8B90DA4222848C242E /* FrameDifferencingApp.cpp */; };
@@ -42,6 +45,10 @@
 		6EE51D8B90DA4222848C242E /* FrameDifferencingApp.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = FrameDifferencingApp.cpp; path = ../src/FrameDifferencingApp.cpp; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* FrameDifferencing.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FrameDifferencing.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A2A4C8410F1E4543BA4CFE4C /* Osc.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = Osc.cpp; path = ../../../cinder_0.9.2_mac/blocks/OSC/src/cinder/osc/Osc.cpp; sourceTree = "<group>"; };
+		A70881DE2507325C006494D6 /* Generator.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Generator.cpp; sourceTree = "<group>"; };
+		A70881DF2507325C006494D6 /* Generator.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Generator.hpp; sourceTree = "<group>"; };
+		A70881E125073393006494D6 /* Squares.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Squares.cpp; sourceTree = "<group>"; };
+		A70881E3250735A3006494D6 /* Generator.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Generator.cpp; sourceTree = "<group>"; };
 		A7C1B30E25014D8A002EA983 /* Squares.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Squares.hpp; sourceTree = "<group>"; };
 		A7FE93E124FED589006DA3F8 /* CinderOpenCV.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CinderOpenCV.h; sourceTree = "<group>"; };
 		B81414D268D84400A4CA4D6F /* Resources.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Resources.h; path = ../include/Resources.h; sourceTree = "<group>"; };
@@ -83,6 +90,8 @@
 			isa = PBXGroup;
 			children = (
 				6EE51D8B90DA4222848C242E /* FrameDifferencingApp.cpp */,
+				A70881E125073393006494D6 /* Squares.cpp */,
+				A70881E3250735A3006494D6 /* Generator.cpp */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -125,6 +134,7 @@
 		29B97314FDCFA39411CA2CEA /* FrameDifferencing */ = {
 			isa = PBXGroup;
 			children = (
+				A70881DE2507325C006494D6 /* Generator.cpp */,
 				01B97315FEAEA392516A2CEA /* Blocks */,
 				29B97315FDCFA39411CA2CEA /* Headers */,
 				080E96DDFE201D6D7F000001 /* Source */,
@@ -138,6 +148,7 @@
 		29B97315FDCFA39411CA2CEA /* Headers */ = {
 			isa = PBXGroup;
 			children = (
+				A70881DF2507325C006494D6 /* Generator.hpp */,
 				A7C1B30E25014D8A002EA983 /* Squares.hpp */,
 				B81414D268D84400A4CA4D6F /* Resources.h */,
 				584C70B52B4143E0A3801925 /* FrameDifferencing_Prefix.pch */,
@@ -266,6 +277,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A70881E4250735A3006494D6 /* Generator.cpp in Sources */,
+				A70881E225073393006494D6 /* Squares.cpp in Sources */,
+				A70881E02507325C006494D6 /* Generator.cpp in Sources */,
 				F32BB57ED9CA41BDBA6C639B /* FrameDifferencingApp.cpp in Sources */,
 				D56F36E7D61B4E1B956FD43B /* Osc.cpp in Sources */,
 			);
@@ -301,6 +315,7 @@
 				INSTALL_PATH = "$(HOME)/Applications";
 				LIBRARY_SEARCH_PATHS = /usr/local/Cellar/opencv/4.1.2/lib;
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				OTHER_CODE_SIGN_FLAGS = "";
 				OTHER_LDFLAGS = (
 					"\"$(CINDER_PATH)/lib/macosx/$(CONFIGURATION)/libcinder.a\"",
 					"-I/usr/local/Cellar/opencv/4.1.2/include/opencv4/opencv",
@@ -392,6 +407,7 @@
 				INSTALL_PATH = "$(HOME)/Applications";
 				LIBRARY_SEARCH_PATHS = /usr/local/Cellar/opencv/4.1.2/lib;
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				OTHER_CODE_SIGN_FLAGS = "";
 				OTHER_LDFLAGS = (
 					"\"$(CINDER_PATH)/lib/macosx/$(CONFIGURATION)/libcinder.a\"",
 					"-I/usr/local/Cellar/opencv/4.1.2/include/opencv4/opencv",
@@ -469,6 +485,7 @@
 				HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\"";
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CODE_SIGN_FLAGS = "--deep";
 				SDKROOT = macosx;
 				USER_HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\" ../include ../../../cinder_0.9.2_mac/blocks/OSC/src";
 			};
@@ -485,6 +502,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\"";
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				OTHER_CODE_SIGN_FLAGS = "--deep";
 				SDKROOT = macosx;
 				USER_HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\" ../include ../../../cinder_0.9.2_mac/blocks/OSC/src";
 			};
