@@ -21,6 +21,8 @@ void Generator::createSquares(cv::Mat mat, int color){
     // we call the config function to create all squares
     allSquares._config(N);
     cv::Mat myMat = mat;
+    float widthOfSquare = getWindowWidth()/this->N;
+    float heightOfSquare = getWindowHeight()/this->N;
     // allPos vector contains all the positions for each squares
     vector<vector<double>> allPos = allSquares.getVector();
     for(int i = 0; i < allPos.size(); i++){
@@ -41,16 +43,17 @@ void Generator::createSquares(cv::Mat mat, int color){
         
         // draw squares here
         // might need an algorithm here instead of hard coding a value 100
+        float modifier = sum/float((255 * widthOfSquare * heightOfSquare));
         if (sum > 100){
             Rectf curSquare = Rectf(allPos[i][0],allPos[i][1],allPos[i][2],allPos[i][3]);
-            if(color != 0){
-                double r1 = ((double) rand() / (RAND_MAX));
-                double r2 = ((double) rand() / (RAND_MAX));
-                double r3 = ((double) rand() / (RAND_MAX));
-                gl::color( r1, r2,r3, 1 );
-            }else{
-                gl::color( 1, 1, 1, 0.3);
-            }
+//            if(color != 0){
+//                double r1 = ((double) rand() / (RAND_MAX));
+//                double r2 = ((double) rand() / (RAND_MAX));
+//                double r3 = ((double) rand() / (RAND_MAX));
+                gl::color(modifier, modifier, 0, 3);
+//            }else{
+//                gl::color( 1, 1, 1, 0.3);
+//            }
             gl::drawSolidRect(curSquare);
         }
     }

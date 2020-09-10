@@ -67,32 +67,35 @@ void FrameDifferencingApp::setup()
     mFrameDifference.data = NULL;
     mCapture = Capture::create(640, 480); //first default camera
     mCapture->start();
-    cout<<"Press a to display 10x10"<<endl;
-    cout<<"Press b to display 20x20"<<endl;
-    cout<<"Press c to display 48x48"<<endl;
-    cout<<"Press d to display 48x48 with random color"<<endl;
+    
+    cout<<endl;
+    cout<<"CRCP-5350 Project 1: Frame Differncing"<<endl;
+    cout<<"Press 1 to display 10x10"<<endl;
+    cout<<"Press 2 to display 20x20"<<endl;
+    cout<<"Press 3 to display 48x48"<<endl;
+    cout<<"Press 4 to display 48x48 with random color"<<endl;
 }
 
 void FrameDifferencingApp::keyDown( KeyEvent event )
 {
     //TODO: save the current frame as the background image when user hits a key
-    if(event.getChar() == 'a')
+    if(event.getChar() == '1')
     {
-        keyPressed = 'a';
+        keyPressed = '1';
     }
     
-    if(event.getChar() == 'b')
+    if(event.getChar() == '2')
     {
-        keyPressed = 'b';
+        keyPressed = '2';
     }
     
-    if(event.getChar() == 'c')
+    if(event.getChar() == '3')
     {
-        keyPressed = 'c';
+        keyPressed = '3';
     }
-    if(event.getChar() == 'd')
+    if(event.getChar() == '4')
     {
-        keyPressed = 'd';
+        keyPressed = '4';
     }
 
 }
@@ -141,19 +144,22 @@ void FrameDifferencingApp::draw()
     gl::clear( Color( 0, 0, 0 ) );
     gl::color( 1, 1, 1, 1);
 
-    if (keyPressed == 'a'){
+//    Generator x(20);
+//    x.createSquares(mFrameDifference);
+//
+    if (keyPressed == '1'){
         Generator x(10);
         x.createSquares(mFrameDifference);
     }
-    if(keyPressed == 'b'){
+    if(keyPressed == '2'){
         Generator x(20);
         x.createSquares(mFrameDifference);
     }
-    if(keyPressed == 'c'){
+    if(keyPressed == '3'){
         Generator x(48);
         x.createSquares(mFrameDifference);
     }
-    if(keyPressed == 'd'){
+    if(keyPressed == '4'){
         Generator x(48);
         x.createSquares(mFrameDifference,1);
     }
