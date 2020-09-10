@@ -29,11 +29,12 @@ using namespace ci::app;
 class Generator{
 private:
     Squares allSquares;
+    int N;
     
 public:
     Generator();
-    Generator(int N);
-    void createSquares();
+    Generator(int n);
+    void createSquares(cv::Mat mat);
 };
 #endif /* Generator_hpp */
 

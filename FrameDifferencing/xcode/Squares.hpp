@@ -32,11 +32,12 @@ private:
 public:
     Squares();
     Squares(int numberSquares);
-    
     void _config(int numberSquares);
     void setWindowWidth(int x){this->windowWidth = x;}
     void setWindowHeight(int y){this->windowHeight = y;}
+    void setN(int n){this->N = n;}
     vector<vector<double>>getVector();
+    int getNval();
 
 };
 #endif /* Squares_hpp */

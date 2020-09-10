@@ -197,89 +197,18 @@ void FrameDifferencingApp::draw()
     
     
     if (keyPressed == 'a'){
-        int N = 10;
-        Squares s(N);
-        cv::Mat myMat = mFrameDifference;
-        cout<<myMat.rows << " "<<myMat.cols<<endl;
-        
-        vector<vector<double>> allPos = s.getVector();
-        for(int i = 0; i < allPos.size(); i++){
-            double x1, y1, x2, y2;
-            x1 = allPos[i][0];
-            y1 = allPos[i][1];
-            x2 = allPos[i][2];
-            y2 = allPos[i][3];
-            int sum = 0;
-            for (int a = x1; a < x2; a++){
-                for (int b = y1; b < y2; b++){
-                    sum = sum + myMat.at<uint8_t>(b,a);
-                }
-            }
-            if (sum > 2000){
-                Rectf curSquare = Rectf(allPos[i][0],allPos[i][1],allPos[i][2],allPos[i][3]);
-                gl::color( 1, 1, 1, 1 );
-                gl::drawSolidRect(curSquare);
-            }
-        }
+        Generator x(10);
+        x.createSquares(mFrameDifference);
     }
     if(keyPressed == 'b'){
-        Generator(20); // NxN
-        
-        int N = 20;
-        Squares s(N);
-        cv::Mat myMat = mFrameDifference;
-        vector<vector<double>> allPos = s.getVector();
-        for(int i = 0; i < allPos.size(); i++){
-            double x1, y1, x2, y2;
-            x1 = allPos[i][0];
-            y1 = allPos[i][1];
-            x2 = allPos[i][2];
-            y2 = allPos[i][3];
-            int sum = 0;
-            for (int a = x1; a < x2; a++){
-                for (int b = y1; b < y2; b++){
-                    sum = sum + myMat.at<uint8_t>(b,a);
-                }
-            }
-
-            if (sum > 300){
-                Rectf curSquare = Rectf(allPos[i][0],allPos[i][1],allPos[i][2],allPos[i][3]);
-                gl::color( 1, 1, 1, 0.3);
-                gl::drawSolidRect(curSquare);
-            }
-        }
+        Generator x(20);
+        x.createSquares(mFrameDifference);
     }
-    
-    
     if(keyPressed == 'c'){
-        int N = 48;
-        Squares s(N);
-        cv::Mat myMat = mFrameDifference;
-        
-        vector<vector<double>> allPos = s.getVector();
-        for(int i = 0; i < allPos.size(); i++){
-            double x1, y1, x2, y2;
-            x1 = allPos[i][0];
-            y1 = allPos[i][1];
-            x2 = allPos[i][2];
-            y2 = allPos[i][3];
-            int sum = 0;
-            for (int a = x1; a < x2; a++){
-                for (int b = y1; b < y2; b++){
-                    sum = sum + myMat.at<uint8_t>(b,a);
-                }
-            }
-            if (sum > 100){
-                Rectf curSquare = Rectf(allPos[i][0],allPos[i][1],allPos[i][2],allPos[i][3]);
-                double r1 = ((double) rand() / (RAND_MAX));
-                double r2 = ((double) rand() / (RAND_MAX));
-                double r3 = ((double) rand() / (RAND_MAX));
-                gl::color( r1, r2,r3, 1 );
-                gl::drawSolidRect(curSquare);
-            }
-        }
-
+        Generator x(48);
+        x.createSquares(mFrameDifference);
     }
+    
 //    if( mTexture )
 //    {
 //        gl::draw( mTexture );

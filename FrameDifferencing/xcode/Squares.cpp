@@ -32,13 +32,16 @@ Squares::Squares(int numberSquares){
 
 
 void Squares::_config(int numberSquares){
+    this->setN(numberSquares);
+    this->setWindowWidth(cinder::app::getWindowWidth());
+    this->setWindowHeight(cinder::app::getWindowHeight());
     
     float l = this->windowWidth/this->N;
     float l2 = this->windowHeight/this->N;
     
+    cout<<l<<" "<<l2<<endl;
     for (int row = 0; row < N; row++){
         for (int col = 0; col < N; col++){
-//          cout<<"("<<col * l <<","<< row * l2 <<")  ("<< col*l+l <<","<< row * l2+l2<<")"<<endl;
             vector<double> currentPos;
             currentPos.push_back(col*l);
             currentPos.push_back(row*l2);
@@ -52,4 +55,8 @@ void Squares::_config(int numberSquares){
 
 vector<vector<double>> Squares::getVector(){
     return this->allPos;
+}
+
+int Squares::getNval(){
+    return this->N;
 }
