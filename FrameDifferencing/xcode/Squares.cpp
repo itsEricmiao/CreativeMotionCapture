@@ -22,7 +22,7 @@ Squares::Squares(){
     
 }
 
-
+// constructor when parsing an int
 Squares::Squares(int numberSquares){
     this->N = numberSquares;
     this->setWindowWidth(cinder::app::getWindowWidth());
@@ -30,7 +30,7 @@ Squares::Squares(int numberSquares){
     this->_config(numberSquares);
 }
 
-
+// config function: setting up all the parameters and calculate all positions for the squares
 void Squares::_config(int numberSquares){
     this->setN(numberSquares);
     this->setWindowWidth(cinder::app::getWindowWidth());
@@ -39,7 +39,7 @@ void Squares::_config(int numberSquares){
     float l = this->windowWidth/this->N;
     float l2 = this->windowHeight/this->N;
     
-    cout<<l<<" "<<l2<<endl;
+    
     for (int row = 0; row < N; row++){
         for (int col = 0; col < N; col++){
             vector<double> currentPos;
@@ -52,11 +52,12 @@ void Squares::_config(int numberSquares){
     }
 }
 
+int Squares::getNval(){
+    return this->N;
+}
 
 vector<vector<double>> Squares::getVector(){
     return this->allPos;
 }
 
-int Squares::getNval(){
-    return this->N;
-}
+

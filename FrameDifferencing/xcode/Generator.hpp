@@ -34,7 +34,7 @@ private:
 public:
     Generator();
     Generator(int n);
-    void createSquares(cv::Mat mat);
+    void createSquares(cv::Mat mat, int color = 0);
 };
 #endif /* Generator_hpp */
 
