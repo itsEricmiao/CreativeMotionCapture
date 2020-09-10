@@ -115,24 +115,18 @@ void FrameDifferencingApp::keyDown( KeyEvent event )
     if(event.getChar() == 'a')
     {
         keyPressed = 'a';
-        cout <<"Making 10x10 Squares"<<endl;
     }
     
     if(event.getChar() == 'b')
     {
         keyPressed = 'b';
-        cout <<"Making 25x25 Squares"<<endl;
     }
     
     if(event.getChar() == 'c')
     {
         keyPressed = 'c';
-        cout <<"Making 50x50 Squares"<<endl;
     }
-    if(event.getChar() == 'x')
-    {
-        keyPressed = 'x';
-    }
+
 }
 
 void FrameDifferencingApp::update()
@@ -221,24 +215,19 @@ void FrameDifferencingApp::draw()
                     sum = sum + myMat.at<uint8_t>(b,a);
                 }
             }
-            if (sum > 100){
+            if (sum > 2000){
                 Rectf curSquare = Rectf(allPos[i][0],allPos[i][1],allPos[i][2],allPos[i][3]);
-                double r1 = ((double) rand() / (RAND_MAX));
-                double r2 = ((double) rand() / (RAND_MAX));
-                double r3 = ((double) rand() / (RAND_MAX));
-                gl::color( r1, r2, r3, 0.3 );
-                gl::color( 1, 1, 1, 0.3 );
+                gl::color( 1, 1, 1, 1 );
                 gl::drawSolidRect(curSquare);
             }
         }
-
     }
     if(keyPressed == 'b'){
-        int N = 16;
+        Generator(20); // NxN
+        
+        int N = 20;
         Squares s(N);
         cv::Mat myMat = mFrameDifference;
-        cout<<myMat.rows << " "<<myMat.cols<<endl;
-        
         vector<vector<double>> allPos = s.getVector();
         for(int i = 0; i < allPos.size(); i++){
             double x1, y1, x2, y2;
@@ -252,13 +241,10 @@ void FrameDifferencingApp::draw()
                     sum = sum + myMat.at<uint8_t>(b,a);
                 }
             }
-            if (sum > 1000){
+
+            if (sum > 300){
                 Rectf curSquare = Rectf(allPos[i][0],allPos[i][1],allPos[i][2],allPos[i][3]);
-                double r1 = ((double) rand() / (RAND_MAX));
-                double r2 = ((double) rand() / (RAND_MAX));
-                double r3 = ((double) rand() / (RAND_MAX));
-                gl::color( r1, r2, r3, 0.3 );
-                gl::color( 1, 1, 1, 0);
+                gl::color( 1, 1, 1, 0.3);
                 gl::drawSolidRect(curSquare);
             }
         }
@@ -266,10 +252,9 @@ void FrameDifferencingApp::draw()
     
     
     if(keyPressed == 'c'){
-        int N = 32;
+        int N = 48;
         Squares s(N);
         cv::Mat myMat = mFrameDifference;
-        cout<<myMat.rows << " "<<myMat.cols<<endl;
         
         vector<vector<double>> allPos = s.getVector();
         for(int i = 0; i < allPos.size(); i++){
@@ -289,31 +274,23 @@ void FrameDifferencingApp::draw()
                 double r1 = ((double) rand() / (RAND_MAX));
                 double r2 = ((double) rand() / (RAND_MAX));
                 double r3 = ((double) rand() / (RAND_MAX));
-                gl::color( r1, r2, r3, 0.3 );
-                gl::color( 1, 1, 1, 0.3 );
+                gl::color( r1, r2,r3, 1 );
                 gl::drawSolidRect(curSquare);
             }
         }
-        
 
     }
-        if(keyPressed == 'x'){
-            
-            
-        }
-    
-    
-    if( mTexture )
-    {
-        gl::draw( mTexture );
-    }
+//    if( mTexture )
+//    {
+//        gl::draw( mTexture );
+//    }
     
 //    if the frame difference isn't null, draw it.
-    if( mFrameDifference.data )
-    {
-        gl::draw( gl::Texture::create(fromOcv(mFrameDifference) ));
-    }
-//
+//    if( mFrameDifference.data )
+//    {
+//        gl::draw( gl::Texture::create(fromOcv(mFrameDifference) ));
+//    }
+
     
 }
 
