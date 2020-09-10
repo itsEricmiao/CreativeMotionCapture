@@ -68,12 +68,14 @@ void FrameDifferencingApp::setup()
     mCapture = Capture::create(640, 480); //first default camera
     mCapture->start();
     
+    
+    
     cout<<endl;
     cout<<"CRCP-5350 Project 1: Frame Differncing"<<endl;
     cout<<"Press 1 to display 10x10"<<endl;
     cout<<"Press 2 to display 20x20"<<endl;
     cout<<"Press 3 to display 48x48"<<endl;
-    cout<<"Press 4 to display 48x48 with random color"<<endl;
+    cout<<"Press 4 to display 96x96 with random color"<<endl;
 }
 
 void FrameDifferencingApp::keyDown( KeyEvent event )
@@ -114,6 +116,8 @@ void FrameDifferencingApp::update()
     
     //do the frame-differencing
     frameDifference(mFrameDifference);
+    
+    
 //    mFrameDifference.at<uint8_t>();
 }
 
@@ -160,8 +164,8 @@ void FrameDifferencingApp::draw()
         x.createSquares(mFrameDifference);
     }
     if(keyPressed == '4'){
-        Generator x(48);
-        x.createSquares(mFrameDifference,1);
+        Generator x(96);
+        x.createSquares(mFrameDifference);
     }
     
 //    if( mTexture )

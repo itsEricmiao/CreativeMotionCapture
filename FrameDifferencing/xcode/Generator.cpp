@@ -46,14 +46,7 @@ void Generator::createSquares(cv::Mat mat, int color){
         float modifier = sum/float((255 * widthOfSquare * heightOfSquare));
         if (sum > 100){
             Rectf curSquare = Rectf(allPos[i][0],allPos[i][1],allPos[i][2],allPos[i][3]);
-//            if(color != 0){
-//                double r1 = ((double) rand() / (RAND_MAX));
-//                double r2 = ((double) rand() / (RAND_MAX));
-//                double r3 = ((double) rand() / (RAND_MAX));
-                gl::color(modifier, modifier, 0, 3);
-//            }else{
-//                gl::color( 1, 1, 1, 0.3);
-//            }
+            gl::color(modifier, modifier, 0, 3);
             gl::drawSolidRect(curSquare);
         }
     }
