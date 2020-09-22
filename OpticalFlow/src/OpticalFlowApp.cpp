@@ -46,6 +46,8 @@
 #include "cinder/gl/gl.h"
 #include "cinder/Capture.h" //add - needed for capture
 #include "cinder/Log.h" //add - needed to log errors
+#include "Osc.h" //add to send OSC
+#include <math.h>
 
 #include "Generator.hpp"
 #include "FrameDifferencing.hpp"
@@ -61,16 +63,14 @@ using namespace std;
 
 class OpticalFlowApp : public App {
   public:
+    FrameDifferencing frameDifferencing;
+    
     char keyPressed;
     void setup() override;
     void mouseDown( MouseEvent event ) override;
     void keyDown( KeyEvent event ) override;
     void update() override;
     void draw() override;
-    
-    FrameDifferencing frameDifferencing; // for frame differencing
-    OpticalFlow opticalFlow; // for optical flow
-
     
 protected:
     CaptureRef                 mCapture; //uses video camera to capture frames of data.
@@ -109,6 +109,15 @@ void OpticalFlowApp::setup()
     mCapture = Capture::create(640, 480); //first default camera
     mCapture->start();
 //    mPrevFrame.data = NULL; //initialize our previous frame to null since in the beginning... there no previous frames!
+    
+    cout<<endl;
+    cout<<"CRCP-5350 Project 2: Optical Flow"<<endl;
+    cout<<"Press 1 to display Optical Flow 10x10"<<endl;
+    cout<<"Press 2 to display Optical Flow 20x20"<<endl;
+    cout<<"Press 3 to display Optical Flow 48x48"<<endl;
+    cout<<"Press d to display Frame Differencing 20x20"<<endl;
+    cout<<"Press f to display Optical Flow 20x20"<<endl;
+    
 }
 
 void OpticalFlowApp::mouseDown( MouseEvent event ){}
@@ -128,21 +137,72 @@ void OpticalFlowApp::update()
     }
     
     //just what it says -- the meat of the program
-    findOpticalFlow();
-    frameDifference(mFrameDifference);
+    if(keyPressed == 'd'){
+        frameDifference(mFrameDifference);
+    }
+    else{
+        findOpticalFlow();
+    }
+   
+    
 }
 
 
 void OpticalFlowApp::keyDown( KeyEvent event ){
     if (event.getChar() == 'f') {
+        cout<<"Key 'f' is pressed"<<endl;
         keyPressed = 'f';
-        
     }
+    
     // if key pressed is d for difference
     if (event.getChar() == 'd')
     {
+        cout<<"Key 'd' is pressed"<<endl;
         keyPressed = 'd';
     }
+    
+    if (event.getChar() == ' ')
+    {
+        cout<<"Key 'space' is pressed"<<endl;
+        keyPressed = ' ';
+    }
+    
+    if (event.getChar() == 'x') {
+        cout<<"Key 'x' is pressed"<<endl;
+        keyPressed = 'x';
+    }
+    
+    if (event.getChar() == '1') {
+        cout<<"Key '1' is pressed"<<endl;
+        keyPressed = '1';
+    }
+    if (event.getChar() == '2') {
+        cout<<"Key '2' is pressed"<<endl;
+        keyPressed = '2';
+    }
+    if (event.getChar() == '3') {
+        cout<<"Key '3' is pressed"<<endl;
+        keyPressed = '3';
+    }
+}
+
+//find the difference between 2 frames + some useful image processing
+void OpticalFlowApp::frameDifference(cv::Mat &outputImg)
+{
+    outputImg.data = NULL;
+    if(!mSurface) return;
+
+    //the current surface or frame in cv::Mat format
+    cv::Mat curFrame = toOcv(Channel(*mSurface));
+    
+    if(mPrevFrame.data){
+        
+        cv::GaussianBlur(curFrame, curFrame, cv::Size(3,3), 0);
+        cv::absdiff(curFrame, mPrevFrame, outputImg);
+        cv::threshold(outputImg, outputImg, 25, 255, cv::THRESH_BINARY);
+    }
+    
+    mPrevFrame = curFrame;
 }
 
 
@@ -194,82 +254,84 @@ void OpticalFlowApp::findOpticalFlow()
     
 }
 
-void OpticalFlowApp::frameDifference(cv::Mat &outputImg)
-{
-    outputImg.data = NULL;
-    if(!mSurface) return;
 
-    //the current surface or frame in cv::Mat format
-    cv::Mat curFrame = toOcv(Channel(*mSurface));
-    
-    if(mPrevFrame.data){
-        
-        cv::GaussianBlur(curFrame, curFrame, cv::Size(3,3), 0);
-        cv::absdiff(curFrame, mPrevFrame, outputImg);
-        cv::threshold(outputImg, outputImg, 25, 255, cv::THRESH_BINARY);
-    }
-    
-    mPrevFrame = curFrame;
-    
-}
 
-void OpticalFlowApp::draw()
-{
+void OpticalFlowApp::draw(){
     gl::clear( Color( 0, 0, 0 ) ); //color the camera frame normally
-//    gl::color( 1, 1, 1,  );
+    gl::color( 1, 1, 1, 1);
     
     // When pressed 'd', execute frameDifferencing app
     if(keyPressed == 'd'){
-        frameDifferencing.setN(20);
-        frameDifferencing.configuration();
+        
+        frameDifferencing.configuration('d', 20);
         frameDifferencing.countPixels(mFrameDifference);
-        frameDifferencing.setMode('d');
         frameDifferencing.display();
     }
     
     // When pressed 'f', execute opticalFlow app
     if(keyPressed == 'f'){
-        opticalFlow.setN(20);
-        opticalFlow.configuration();
+        OpticalFlow opticalFlow;
+        opticalFlow.configuration('f', 20);
         opticalFlow.countFeatures(mFeatures);
-        opticalFlow.setMode('f');
         opticalFlow.display();
     }
     
     
-    if(keyPressed == ' '){
+    if(keyPressed == 'x'){
+        //draw the camera frame
+        if( mTexture )
+        {
+            gl::draw( mTexture );
+        }
+    
+        // draw all the old points @ 0.5 alpha (transparency) as a circle outline
+        gl::color( 1, 0, 0, 0.55 );
+        for( int i=0; i<mPrevFeatures.size(); i++ )
+            gl::drawStrokedCircle( fromOcv( mPrevFeatures[i] ), 3 );
+    
+    
+        // draw all the new points @ 0.5 alpha (transparency)
+        gl::color( 0, 0, 1, 0.5f );
+        for( int i=0; i<mFeatures.size(); i++ )
+            gl::drawSolidCircle( fromOcv( mFeatures[i] ), 3 );
+    
+        //draw lines from the previous features to the new features
+        //you will only see these lines if the current features are relatively far from the previous
+        gl::color( 0, 1, 0, 0.5f );
+        gl::begin( GL_LINES );
+        for( size_t idx = 0; idx < mFeatures.size(); ++idx ) {
+            if( mFeatureStatuses[idx] ) {
+                gl::vertex( fromOcv( mFeatures[idx] ) );
+                gl::vertex( fromOcv( mPrevFeatures[idx] ) );
+            }
+        }
+        gl::end();
+    }
+    
+    if(keyPressed == '1'){
+        OpticalFlow opticalFlow;
+        opticalFlow.configuration('f',10);
+        opticalFlow.countFeatures(mFeatures);
+        opticalFlow.display();
+        
+    }
+    if(keyPressed == '2'){
+        OpticalFlow opticalFlow;
+        opticalFlow.configuration('f',20);
+        opticalFlow.countFeatures(mFeatures);
+        opticalFlow.display();
+        
+    }
+    if(keyPressed == '3'){
+        OpticalFlow opticalFlow;
+        opticalFlow.configuration('f',96);
+        opticalFlow.countFeatures(mFeatures);
+        opticalFlow.display();
         
     }
     
     
-    //draw the camera frame
-//    if( mTexture )
-//    {
-//        gl::draw( mTexture );
-//    }
-//
-//    // draw all the old points @ 0.5 alpha (transparency) as a circle outline
-//    gl::color( 1, 0, 0, 0.55 );
-//    for( int i=0; i<mPrevFeatures.size(); i++ )
-//        gl::drawStrokedCircle( fromOcv( mPrevFeatures[i] ), 3 );
-//
-//
-//    // draw all the new points @ 0.5 alpha (transparency)
-//    gl::color( 0, 0, 1, 0.5f );
-//    for( int i=0; i<mFeatures.size(); i++ )
-//        gl::drawSolidCircle( fromOcv( mFeatures[i] ), 3 );
-//
-//    //draw lines from the previous features to the new features
-//    //you will only see these lines if the current features are relatively far from the previous
-//    gl::color( 0, 1, 0, 0.5f );
-//    gl::begin( GL_LINES );
-//    for( size_t idx = 0; idx < mFeatures.size(); ++idx ) {
-//        if( mFeatureStatuses[idx] ) {
-//            gl::vertex( fromOcv( mFeatures[idx] ) );
-//            gl::vertex( fromOcv( mPrevFeatures[idx] ) );
-//        }
-//    }
-//    gl::end();
+    
 }
 
 CINDER_APP( OpticalFlowApp, RendererGl )

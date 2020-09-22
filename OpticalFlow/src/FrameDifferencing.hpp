@@ -21,8 +21,9 @@ using namespace std;
 
 class FrameDifferencing : public Generator{
 public:
-    // Couting the pixels in each squares
-    void countPixels(cv::Mat outputImg){
+    
+    
+    void countPixels(cv::Mat myMat){ // Couting the pixels in each squares
         int sum = 0;
         //go through each square in the vector
         for (int i = 0; i < allSquares.size(); i++)
@@ -33,7 +34,7 @@ public:
             {
                 for(int n = allSquares[i].getY1(); n < allSquares[i].getY2(); n++)
                 {
-                    sum = sum + outputImg.at<u_int8_t>(n, m);
+                    sum = sum + myMat.at<u_int8_t>(n, m);
                 }
             }
             allSquares[i].setFeatures(sum);
