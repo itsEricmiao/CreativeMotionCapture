@@ -3,7 +3,6 @@
 //  FeaturesTracking
 //
 //  Created by Eric Miao on 9/21/20.
-//
 
 #ifndef FrameDifferencing_hpp
 #define FrameDifferencing_hpp

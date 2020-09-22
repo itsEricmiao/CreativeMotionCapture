@@ -63,7 +63,8 @@ public:
     // display function for displaying all squares on the screen based on mode
     void display(){
         
-        // when using frame differencing, we use numPixels/255*w*h to normalize the color of the square
+        // when in frame differencing mode:
+        // we use numPixels/255*w*h to normalize the color of the square
         if (_mode == 'd'){
             for (int i = 0; i < allSquares.size(); i++)
             {
@@ -72,8 +73,9 @@ public:
                 
                 // modifier normzalizes the color value
                 float modifier = allSquares[i].getFeatures()/float((255 * widthOfSquare * heightOfSquare));
-                if (allSquares[i].getFeatures() > 100) //draw the square
+                if (allSquares[i].getFeatures() > 100)
                 {
+                    //draw the square
                     // the transparency changes based on the number of pixels in a square
                     gl::color(modifier, modifier, 0,  3);
                     Rectf curSquare = Rectf( allSquares[i].getX1(), allSquares[i].getY1(), allSquares[i].getX2(),allSquares[i].getY2());
@@ -82,14 +84,16 @@ public:
             }
         }
         
-        // when using optical flow, we use a norm value to normalize the color of the square.
+        // when in optical flow mode:
+        // we use a norm value to normalize the color of the square.
         if (_mode == 'f'){
             int norm = 5;
             for (int i = 0; i < allSquares.size(); i++)
             {
-                if (allSquares[i].getFeatures() > 0) //draw the square
+                if (allSquares[i].getFeatures() > 0)
                 {
-                    gl::color(0, 0, 1,  (float)allSquares[i].getFeatures() / norm); //set color based on features
+                    //draw the square
+                    gl::color(0, 0, 1,  (float)allSquares[i].getFeatures() / norm);
                     Rectf curSquare = Rectf( allSquares[i].getX1(), allSquares[i].getY1(), allSquares[i].getX2(),allSquares[i].getY2());
                     gl::drawSolidRect(curSquare);
                 }

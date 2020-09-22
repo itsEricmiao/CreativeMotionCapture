@@ -731,6 +731,11 @@ dependencies: \
   /usr/local/Cellar/opencv/4.1.2/include/opencv4/opencv2/imgproc/imgproc.hpp \
   /usr/local/Cellar/opencv/4.1.2/include/opencv4/opencv2/imgproc.hpp \
   /usr/local/Cellar/opencv/4.1.2/include/opencv4/opencv2/video/tracking.hpp \
+  /usr/local/Cellar/opencv/4.1.2/include/opencv4/opencv2/imgcodecs.hpp \
+  /usr/local/Cellar/opencv/4.1.2/include/opencv4/opencv2/videoio.hpp \
+  /usr/local/Cellar/opencv/4.1.2/include/opencv4/opencv2/highgui.hpp \
+  /usr/local/Cellar/opencv/4.1.2/include/opencv4/opencv2/video.hpp \
+  /usr/local/Cellar/opencv/4.1.2/include/opencv4/opencv2/video/background_segm.hpp \
   /Users/ericmiao/Desktop/School/MotionCapture/CreativeMotionCapture/OpticalFlow/src/CinderOpenCV.h \
   ../../../cinder_0.9.2_mac/include/cinder/ImageIo.h \
   ../../../cinder_0.9.2_mac/include/cinder/app/App.h \

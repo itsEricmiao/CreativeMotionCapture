@@ -38,6 +38,11 @@
 #include <opencv2/core/core.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/video/tracking.hpp>
+#include <opencv2/imgcodecs.hpp>
+#include <opencv2/imgproc.hpp>
+#include <opencv2/videoio.hpp>
+#include <opencv2/highgui.hpp>
+#include <opencv2/video.hpp>
 
 #include "CinderOpenCV.h"
 
@@ -53,7 +58,7 @@
 #include "FrameDifferencing.hpp"
 #include "OpticalFlow.hpp"
 
-#define SAMPLE_WINDOW_MOD 300 //how often we find new features -- that is 1/300 frames we will find some features
+#define SAMPLE_WINDOW_MOD 10 //how often we find new features -- that is 1/300 frames we will find some features
 #define MAX_FEATURES 300 //The maximum number of features to track. Experiment with changing this number
 
 
@@ -63,7 +68,9 @@ using namespace std;
 
 class OpticalFlowApp : public App {
   public:
-    FrameDifferencing frameDifferencing;
+    
+    bool ifbgSub = false;
+    cv::Ptr<cv::BackgroundSubtractor> mBackgroundSubtract;
     
     char keyPressed;
     void setup() override;
@@ -77,17 +84,19 @@ protected:
     gl::TextureRef             mTexture; //the current frame of visual data in OpenGL format.
     
     //for optical flow
-    vector<cv::Point2f>        mPrevFeatures, //the features that we found in the last frame
-                               mFeatures; //the feature that we found in the current frame
+    vector<cv::Point2f>        mPrevFeatures; //the features that we found in the last frame
+    vector<cv::Point2f>        mFeatures; //the feature that we found in the current frame
     vector<uint8_t>            mFeatureStatuses; //a map of previous features to current features
     
     cv::Mat                    mPrevFrame; //the last frame
     cv::Mat                    mFrameDifference;
+    cv::Mat                    mCurrFrame;
     ci::SurfaceRef             mSurface; //the current frame of visual data in CInder format.
     
     
     void findOpticalFlow(); //finds the optical flow -- the visual or apparent motion of features (or persons or things or what you can detect/measure) through video
     void frameDifference(cv::Mat &outputImg);
+
 
 };
 
@@ -110,6 +119,9 @@ void OpticalFlowApp::setup()
     mCapture->start();
 //    mPrevFrame.data = NULL; //initialize our previous frame to null since in the beginning... there no previous frames!
     
+    // do the bg substraction
+    mBackgroundSubtract = cv::createBackgroundSubtractorKNN();
+    
     cout<<endl;
     cout<<"CRCP-5350 Project 2: Optical Flow"<<endl;
     cout<<"Press 1 to display Optical Flow 10x10"<<endl;
@@ -117,6 +129,7 @@ void OpticalFlowApp::setup()
     cout<<"Press 3 to display Optical Flow 48x48"<<endl;
     cout<<"Press d to display Frame Differencing 20x20"<<endl;
     cout<<"Press f to display Optical Flow 20x20"<<endl;
+    cout<<"Press space to show background substraction"<<endl;
     
 }
 
@@ -140,10 +153,12 @@ void OpticalFlowApp::update()
     if(keyPressed == 'd'){
         frameDifference(mFrameDifference);
     }
+    if(keyPressed == ' '){
+        frameDifference(mFrameDifference);
+    }
     else{
         findOpticalFlow();
     }
-   
     
 }
 
@@ -186,6 +201,9 @@ void OpticalFlowApp::keyDown( KeyEvent event ){
     }
 }
 
+
+
+
 //find the difference between 2 frames + some useful image processing
 void OpticalFlowApp::frameDifference(cv::Mat &outputImg)
 {
@@ -213,8 +231,14 @@ void OpticalFlowApp::findOpticalFlow()
     //convert gl::Texturer to the cv::Mat(rix) --> Channel() -- converts, makes sure it is 8-bit
     cv::Mat curFrame = toOcv(Channel(*mSurface));
     
+    if (ifbgSub){
+//        cv::Mat outputFrame; //the method will put the results (eg. the foreground mask) into the output frame
+        mBackgroundSubtract->apply(curFrame, curFrame);
+        mCurrFrame = curFrame;
+    }
     
     //if we have a previous sample, then we can actually find the optical flow.
+    
     if( mPrevFrame.data ) {
         
         // pick new features once every SAMPLE_WINDOW_MOD frames, or the first frame
@@ -255,20 +279,19 @@ void OpticalFlowApp::findOpticalFlow()
 }
 
 
-
 void OpticalFlowApp::draw(){
     gl::clear( Color( 0, 0, 0 ) ); //color the camera frame normally
     gl::color( 1, 1, 1, 1);
     
     // When pressed 'd', execute frameDifferencing app
     if(keyPressed == 'd'){
-        
+        FrameDifferencing frameDifferencing;
         frameDifferencing.configuration('d', 20);
         frameDifferencing.countPixels(mFrameDifference);
         frameDifferencing.display();
     }
     
-    // When pressed 'f', execute opticalFlow app
+    // When pressed 'f', execute opticalFlow app with N = 20
     if(keyPressed == 'f'){
         OpticalFlow opticalFlow;
         opticalFlow.configuration('f', 20);
@@ -276,7 +299,41 @@ void OpticalFlowApp::draw(){
         opticalFlow.display();
     }
     
+    // run opticalFlow app with N = 10
+    if(keyPressed == '1'){
+        OpticalFlow opticalFlow;
+        opticalFlow.configuration('f',10);
+        opticalFlow.countFeatures(mFeatures);
+        opticalFlow.display();
+        
+    }
     
+    // run opticalFlow app with N = 20
+    if(keyPressed == '2'){
+        OpticalFlow opticalFlow;
+        opticalFlow.configuration('f',20);
+        opticalFlow.countFeatures(mFeatures);
+        opticalFlow.display();
+        
+    }
+    
+    // run opticalFlow app with N = 96
+    if(keyPressed == '3'){
+        OpticalFlow opticalFlow;
+        opticalFlow.configuration('f',96);
+        opticalFlow.countFeatures(mFeatures);
+        opticalFlow.display();
+    }
+    
+    // run background substruction
+    if(keyPressed == ' '){
+        //create Background Subtractor objects
+        ifbgSub = !ifbgSub;
+//
+        
+    }
+    
+    //This should be the default code from Courtney
     if(keyPressed == 'x'){
         //draw the camera frame
         if( mTexture )
@@ -308,29 +365,10 @@ void OpticalFlowApp::draw(){
         gl::end();
     }
     
-    if(keyPressed == '1'){
-        OpticalFlow opticalFlow;
-        opticalFlow.configuration('f',10);
-        opticalFlow.countFeatures(mFeatures);
-        opticalFlow.display();
-        
+    if (mCurrFrame.data != NULL){
+        gl::color(1,1,1,0.5);
+        gl::draw(gl::Texture::create(fromOcv(mCurrFrame))); //drawing the currentFrame
     }
-    if(keyPressed == '2'){
-        OpticalFlow opticalFlow;
-        opticalFlow.configuration('f',20);
-        opticalFlow.countFeatures(mFeatures);
-        opticalFlow.display();
-        
-    }
-    if(keyPressed == '3'){
-        OpticalFlow opticalFlow;
-        opticalFlow.configuration('f',96);
-        opticalFlow.countFeatures(mFeatures);
-        opticalFlow.display();
-        
-    }
-    
-    
     
 }
 
