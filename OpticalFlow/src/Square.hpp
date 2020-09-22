@@ -13,6 +13,8 @@ using namespace ci::app;
 using namespace std;
 
 #include <stdio.h>
+
+// This is the basic square class
 class Square{
 private:
     int x1;
@@ -24,8 +26,8 @@ private:
     int num_features;
 
 public:
-    Square(){}
-    Square(int a, int b, int c, int d, int l, int h){
+    Square(){} // constructor
+    Square(int a, int b, int c, int d, int l, int h){ // constructor
         x1 = a;
         y1 = b;
         x2 = c;
@@ -34,6 +36,7 @@ public:
         height = h;
     }
     
+    // setters and getters
     void setFeatures(int n){num_features = n;}
     int getX1(){return x1;}
     int getX2(){return x2;}

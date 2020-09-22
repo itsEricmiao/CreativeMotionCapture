@@ -27,15 +27,16 @@ using namespace std;
 class Generator{
 protected:
     int N;
-//    char _mode; //'d' for frameDiff and 'f' for featuresSub
+    char _mode; //'d' for frameDiff and 'f' for featuresSub
     vector <Square> allSquares; // contains all the square objects
     cv::Mat myMat;
     
 public:
-    Generator() {}
+    Generator() {} // constructor
     
-    Generator(int n) {N = n;}
+    Generator(int n) {N = n;} // constructor
     
+    // config function for creating all the squares
     void configuration(){
         int length = getWindowWidth()/N;
         int height = getWindowHeight()/N;
@@ -53,16 +54,24 @@ public:
         }
     }
     
-    void display(char mode){
+    // display function for displaying all squares on the screen based on mode
+    void display(){
         int norm = 0; //normalizing variable for color/transparecy
-        if (mode == 'f') { norm = 50; }
-        else if (mode == 'd' ) { norm = 100000; }
+        if (_mode == 'f')
+        {
+            norm = 50;
+        }
+        else if (_mode == 'd')
+        {
+            norm = 50000;
+        }
         
         //squareFeatureProperties();
         for (int i = 0; i < allSquares.size(); i++)
         {
-            cout<<"features: "<<allSquares[i].getFeatures()<<endl;
-            gl::color(1, 0, 0,  (float)allSquares[i].getFeatures() / norm ); //set color based on features
+            
+            gl::color(0, 0, 1,  (float)allSquares[i].getFeatures() / norm); //set color based on features
+            
             if (allSquares[i].getFeatures() > 0) //draw the square
             {
                 gl::drawSolidRect( Rectf( allSquares[i].getX1(), allSquares[i].getY1(), allSquares[i].getX2(),allSquares[i].getY2()));
@@ -71,6 +80,8 @@ public:
     }
     
     void setN(int n){N = n;}
+    
+    void setMode(char mode){_mode = mode;}
     
     void print(){
         for(int i = 0; i < allSquares.size(); i++){

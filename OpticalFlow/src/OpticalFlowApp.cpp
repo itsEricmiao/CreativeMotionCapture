@@ -1,5 +1,10 @@
+// Fall 2020
+// CRCP-5350
+// Programmer: Eric Miao
+
+
+
 /*
- 
  Programmer: Courtney Brown
  Date: c2019
  Notes: Modified from Cinder OpenCV sample on optical flow
@@ -27,7 +32,7 @@
  
  What do think optical flow is measuring? If you haven't read the OpenCV tutorial on Optical flow, here it is:
  https://docs.opencv.org/3.4/d4/dee/tutorial_optical_flow.html
- 
+
  */
 
 #include <opencv2/core/core.hpp>
@@ -63,8 +68,8 @@ class OpticalFlowApp : public App {
     void update() override;
     void draw() override;
     
-    FrameDifferencing frameDifferencing;
-    OpticalFlow opticalFlow;
+    FrameDifferencing frameDifferencing; // for frame differencing
+    OpticalFlow opticalFlow; // for optical flow
 
     
 protected:
@@ -106,10 +111,7 @@ void OpticalFlowApp::setup()
 //    mPrevFrame.data = NULL; //initialize our previous frame to null since in the beginning... there no previous frames!
 }
 
-//maybe you will add mouse functionality!
-void OpticalFlowApp::mouseDown( MouseEvent event )
-{
-}
+void OpticalFlowApp::mouseDown( MouseEvent event ){}
 
 void OpticalFlowApp::update()
 {
@@ -128,9 +130,7 @@ void OpticalFlowApp::update()
     //just what it says -- the meat of the program
     findOpticalFlow();
     frameDifference(mFrameDifference);
-    
 }
-
 
 
 void OpticalFlowApp::keyDown( KeyEvent event ){
@@ -144,6 +144,7 @@ void OpticalFlowApp::keyDown( KeyEvent event ){
         keyPressed = 'd';
     }
 }
+
 
 void OpticalFlowApp::findOpticalFlow()
 {
@@ -214,25 +215,33 @@ void OpticalFlowApp::frameDifference(cv::Mat &outputImg)
 
 void OpticalFlowApp::draw()
 {
-    gl::clear( Color( 0, 0, 0 ) );
+    gl::clear( Color( 0, 0, 0 ) ); //color the camera frame normally
+//    gl::color( 1, 1, 1,  );
     
-    //color the camera frame normally
-//    gl::color( 1, 1, 1, 0.55 );
-
+    // When pressed 'd', execute frameDifferencing app
     if(keyPressed == 'd'){
         frameDifferencing.setN(20);
         frameDifferencing.configuration();
         frameDifferencing.countPixels(mFrameDifference);
-        frameDifferencing.display('d');
+        frameDifferencing.setMode('d');
+        frameDifferencing.display();
     }
     
+    // When pressed 'f', execute opticalFlow app
     if(keyPressed == 'f'){
         opticalFlow.setN(20);
         opticalFlow.configuration();
         opticalFlow.countFeatures(mFeatures);
-        opticalFlow.display('f');
-//        opticalFlow.display();
+        opticalFlow.setMode('f');
+        opticalFlow.display();
     }
+    
+    
+    if(keyPressed == ' '){
+        
+    }
+    
+    
     //draw the camera frame
 //    if( mTexture )
 //    {

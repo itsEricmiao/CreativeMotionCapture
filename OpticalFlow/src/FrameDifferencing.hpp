@@ -21,22 +21,22 @@ using namespace std;
 
 class FrameDifferencing : public Generator{
 public:
-    
-    
+    // Couting the pixels in each squares
     void countPixels(cv::Mat outputImg){
-        int pixelAddition = 0;
-        for (int i = 0; i < allSquares.size(); i++) //cycle through square vector
+        int sum = 0;
+        //go through each square in the vector
+        for (int i = 0; i < allSquares.size(); i++)
         {
-            pixelAddition = 0;
+            sum = 0;
             allSquares[i].setFeatures(0);
-            for(int a = allSquares[i].getX1(); a < allSquares[i].getX2(); a++)
+            for(int m = allSquares[i].getX1(); m < allSquares[i].getX2(); m++)
             {
-                for(int b = allSquares[i].getY1(); b < allSquares[i].getY2(); b++)
+                for(int n = allSquares[i].getY1(); n < allSquares[i].getY2(); n++)
                 {
-                    pixelAddition = pixelAddition + outputImg.at<u_int8_t>(b, a);
+                    sum = sum + outputImg.at<u_int8_t>(n, m);
                 }
             }
-            allSquares[i].setFeatures(pixelAddition);
+            allSquares[i].setFeatures(sum);
         }
     }
 };
