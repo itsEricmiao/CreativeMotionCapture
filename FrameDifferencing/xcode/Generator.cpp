@@ -44,6 +44,7 @@ void Generator::createSquares(cv::Mat mat, int color){
         // draw squares here
         // might need an algorithm here instead of hard coding a value 100
         float modifier = sum/float((255 * widthOfSquare * heightOfSquare));
+        cout<<modifier<<endl;
         if (sum > 100){
             Rectf curSquare = Rectf(allPos[i][0],allPos[i][1],allPos[i][2],allPos[i][3]);
             gl::color(modifier, modifier, 0, 3);

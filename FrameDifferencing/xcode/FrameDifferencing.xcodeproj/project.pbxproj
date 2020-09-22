@@ -148,11 +148,11 @@
 		29B97315FDCFA39411CA2CEA /* Headers */ = {
 			isa = PBXGroup;
 			children = (
+				B81414D268D84400A4CA4D6F /* Resources.h */,
+				A7FE93E124FED589006DA3F8 /* CinderOpenCV.h */,
+				584C70B52B4143E0A3801925 /* FrameDifferencing_Prefix.pch */,
 				A70881DF2507325C006494D6 /* Generator.hpp */,
 				A7C1B30E25014D8A002EA983 /* Squares.hpp */,
-				B81414D268D84400A4CA4D6F /* Resources.h */,
-				584C70B52B4143E0A3801925 /* FrameDifferencing_Prefix.pch */,
-				A7FE93E124FED589006DA3F8 /* CinderOpenCV.h */,
 			);
 			name = Headers;
 			sourceTree = "<group>";
@@ -237,7 +237,6 @@
 			attributes = {
 				TargetAttributes = {
 					8D1107260486CEB800E47090 = {
-						DevelopmentTeam = 7K2GK6E3VH;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -291,12 +290,12 @@
 		C01FCF4B08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				DEAD_CODE_STRIPPING = YES;
-				DEVELOPMENT_TEAM = 7K2GK6E3VH;
+				DEVELOPMENT_TEAM = "";
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -314,7 +313,7 @@
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
 				LIBRARY_SEARCH_PATHS = /usr/local/Cellar/opencv/4.1.2/lib;
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				OTHER_CODE_SIGN_FLAGS = "";
 				OTHER_LDFLAGS = (
 					"\"$(CINDER_PATH)/lib/macosx/$(CONFIGURATION)/libcinder.a\"",
@@ -371,7 +370,7 @@
 					"-lopencv_imgproc",
 					"-lopencv_core",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.libcinder.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_BUNDLE_IDENTIFIER = org.smu.FrameDifferencing;
 				PRODUCT_NAME = FrameDifferencing;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SYMROOT = ./build;
@@ -382,12 +381,12 @@
 		C01FCF4C08A954540054247B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = 7K2GK6E3VH;
+				DEVELOPMENT_TEAM = "";
 				GCC_FAST_MATH = YES;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
@@ -406,7 +405,7 @@
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
 				LIBRARY_SEARCH_PATHS = /usr/local/Cellar/opencv/4.1.2/lib;
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				OTHER_CODE_SIGN_FLAGS = "";
 				OTHER_LDFLAGS = (
 					"\"$(CINDER_PATH)/lib/macosx/$(CONFIGURATION)/libcinder.a\"",
@@ -463,7 +462,7 @@
 					"-lopencv_imgproc",
 					"-lopencv_core",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.libcinder.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_BUNDLE_IDENTIFIER = org.smu.FrameDifferencing;
 				PRODUCT_NAME = FrameDifferencing;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				STRIP_INSTALLED_PRODUCT = YES;
