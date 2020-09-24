@@ -69,8 +69,9 @@ using namespace std;
 class OpticalFlowApp : public App {
   public:
     
-    bool ifbgSub = false;
-    cv::Ptr<cv::BackgroundSubtractor> mBackgroundSubtract;
+    bool ifbgSub = false; //boolean value for determining if uses bg substraction
+    
+    cv::Ptr<cv::BackgroundSubtractor> mBackgroundSubtract; // from openCV library
     
     char keyPressed;
     void setup() override;
@@ -90,13 +91,12 @@ protected:
     
     cv::Mat                    mPrevFrame; //the last frame
     cv::Mat                    mFrameDifference;
-    cv::Mat                    mCurrFrame;
+    cv::Mat                    mCurrFrame; // the current frame
     ci::SurfaceRef             mSurface; //the current frame of visual data in CInder format.
     
     
     void findOpticalFlow(); //finds the optical flow -- the visual or apparent motion of features (or persons or things or what you can detect/measure) through video
-    void frameDifference(cv::Mat &outputImg);
-
+    void frameDifference(cv::Mat &outputImg); //finds the frame differencing
 
 };
 
@@ -117,7 +117,6 @@ void OpticalFlowApp::setup()
     mFrameDifference.data = NULL;
     mCapture = Capture::create(640, 480); //first default camera
     mCapture->start();
-//    mPrevFrame.data = NULL; //initialize our previous frame to null since in the beginning... there no previous frames!
     
     // do the bg substraction
     mBackgroundSubtract = cv::createBackgroundSubtractorKNN();
@@ -148,14 +147,16 @@ void OpticalFlowApp::update()
         else
             mTexture->update(*mSurface);
     }
-    
-    //just what it says -- the meat of the program
+
+    // if keyPressed is 'd' or 'space', runs the framDifferencing function
     if(keyPressed == 'd'){
         frameDifference(mFrameDifference);
     }
     if(keyPressed == ' '){
         frameDifference(mFrameDifference);
     }
+    
+    // else: runs the framDifferencing function
     else{
         findOpticalFlow();
     }
@@ -169,7 +170,6 @@ void OpticalFlowApp::keyDown( KeyEvent event ){
         keyPressed = 'f';
     }
     
-    // if key pressed is d for difference
     if (event.getChar() == 'd')
     {
         cout<<"Key 'd' is pressed"<<endl;
@@ -179,7 +179,7 @@ void OpticalFlowApp::keyDown( KeyEvent event ){
     if (event.getChar() == ' ')
     {
         cout<<"Key 'space' is pressed"<<endl;
-        keyPressed = ' ';
+        ifbgSub = !ifbgSub;
     }
     
     if (event.getChar() == 'x') {
@@ -272,7 +272,6 @@ void OpticalFlowApp::findOpticalFlow()
             cv::calcOpticalFlowPyrLK( mPrevFrame, curFrame, mPrevFeatures, mFeatures, mFeatureStatuses, errors );
         
     }
-    
     //set previous frame
     mPrevFrame = curFrame;
     
@@ -282,6 +281,11 @@ void OpticalFlowApp::findOpticalFlow()
 void OpticalFlowApp::draw(){
     gl::clear( Color( 0, 0, 0 ) ); //color the camera frame normally
     gl::color( 1, 1, 1, 1);
+    
+    if (mCurrFrame.data != NULL && ifbgSub){
+        gl::color(1,1,1,0.5);
+        gl::draw(gl::Texture::create(fromOcv(mCurrFrame))); //drawing the currentFrame
+    }
     
     // When pressed 'd', execute frameDifferencing app
     if(keyPressed == 'd'){
@@ -325,13 +329,6 @@ void OpticalFlowApp::draw(){
         opticalFlow.display();
     }
     
-    // run background substruction
-    if(keyPressed == ' '){
-        //create Background Subtractor objects
-        ifbgSub = !ifbgSub;
-//
-        
-    }
     
     //This should be the default code from Courtney
     if(keyPressed == 'x'){
@@ -365,10 +362,7 @@ void OpticalFlowApp::draw(){
         gl::end();
     }
     
-    if (mCurrFrame.data != NULL){
-        gl::color(1,1,1,0.5);
-        gl::draw(gl::Texture::create(fromOcv(mCurrFrame))); //drawing the currentFrame
-    }
+    
     
 }
 

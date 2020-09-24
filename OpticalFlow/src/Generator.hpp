@@ -101,6 +101,7 @@ public:
         }
     }
     
+    // mainly for testing, not used in the actual program
     void print(){
         for(int i = 0; i < allSquares.size(); i++){
             int x1, y1, x2, y2;
