@@ -43,7 +43,9 @@
 #include "Osc.h" //add to send OSC
 
 #include <math.h>
-
+#include "Generator.hpp"
+#include "Square.hpp"
+#include "FrameDifferencing.hpp"
 #include "CinderOpenCV.h"
 
 using namespace ci;
@@ -58,23 +60,21 @@ using namespace std;
 //set up our OSC addresses
 #define WHERE_OSCADDRESS "/MakeItArt/Where"
 #define MOUSEDOWN_OSCADDRESS "/MakeItArt/Down"
+#define PIXELCOUNT_OSCADDRESS "/MakeItArt/Pixel"
 
-
-class MakeItArtMouseApp : public App {
+class MakeItArtApp : public App {
   public:
+    char keyPressed;
+    vector<Square> squares;
     void setup() override;
     void keyDown( KeyEvent event ) override;
     void mouseDrag( MouseEvent event) override;
     void mouseDown( MouseEvent event) override;
     void mouseUp( MouseEvent event) override;
 
-
-
     void update() override;
     void draw() override;
-    
-    MakeItArtMouseApp();
-    
+    MakeItArtApp();
     ci::vec2 curMousePosLastDown;
     bool isMouseDown;
 
@@ -92,25 +92,25 @@ class MakeItArtMouseApp : public App {
     osc::SenderUdp                mSender; //sends the OSC via the UDP protocol
     void sendOSC(std::string addr, float x, float y); //sending the OSC values
     void sendOSC(std::string addr, float down);//just one -- this is inelegant but effective for now
-
+    void sendOSC(std::string addr, int featuresCount);
+    
     void frameDifference(cv::Mat &outputImg);
-
 };
 
-MakeItArtMouseApp::MakeItArtMouseApp() : mSender(LOCALPORT, DESTHOST, DESTPORT) //initializing our class variables
+MakeItArtApp::MakeItArtApp() : mSender(LOCALPORT, DESTHOST, DESTPORT) //initializing our class variables
 {
     
 }
 
 //sets the mouse drag values
-void MakeItArtMouseApp::mouseDrag( MouseEvent event)
+void MakeItArtApp::mouseDrag( MouseEvent event)
 {
     curMousePosLastDown = event.getPos();
     isMouseDown = true;
     
 }
 //sets the mouse down values
-void MakeItArtMouseApp::mouseDown( MouseEvent event)
+void MakeItArtApp::mouseDown( MouseEvent event)
 {
     curMousePosLastDown = event.getPos();
     isMouseDown = true;
@@ -119,35 +119,41 @@ void MakeItArtMouseApp::mouseDown( MouseEvent event)
 
 
 //sets the mouse up values
-void MakeItArtMouseApp::mouseUp( MouseEvent event)
+void MakeItArtApp::mouseUp( MouseEvent event)
 {
     isMouseDown = false;
 }
 
 
-void MakeItArtMouseApp::sendOSC(std::string addr, float x, float y) //sending the OSC values
+void MakeItArtApp::sendOSC(std::string addr, float x, float y) //sending the OSC values
 {
     osc::Message msg;
     msg.setAddress(addr); //sets the address
-    
     msg.append(x);
     msg.append(y);
-    
     mSender.send(msg);
 }
 
-void MakeItArtMouseApp::sendOSC(std::string addr, float down) //sending the OSC values
+void MakeItArtApp::sendOSC(std::string addr, float down) //sending the OSC values
 {
     osc::Message msg;
     msg.setAddress(addr); //sets the address
-    
     msg.append(down);
-    
+    mSender.send(msg);
+}
+
+void MakeItArtApp:: sendOSC(std::string addr, int featuresCount)
+{
+    osc::Message msg;
+    msg.setAddress(addr); //sets the address
+//    featuresCount = int(featuresCount) + int(rand()%100); // will change later
+    cout<<"featuresCount: "<<featuresCount<<endl;
+    msg.append(float(featuresCount));
     mSender.send(msg);
 }
 
 //initialization
-void MakeItArtMouseApp::setup()
+void MakeItArtApp::setup()
 {
     //set up our OSC sender and bind it to our local port
     try{
@@ -175,19 +181,21 @@ void MakeItArtMouseApp::setup()
     
 }
 
-void MakeItArtMouseApp::keyDown( KeyEvent event )
+void MakeItArtApp::keyDown( KeyEvent event )
 {
     //TODO: save the current frame as the background image when user hits a key
     
     //eg:
     if(event.getChar() == ' ')
     {
+        cout<<"Key 'space' is pressed"<<endl;
+        keyPressed = ' ';
         //TODO: do a thing. Like save the current frame.
     }
 
 }
 
-void MakeItArtMouseApp::update()
+void MakeItArtApp::update()
 {
     //does frame-differencing stuff
     if(mCapture && mCapture->checkNewFrame()) //is there a new frame???? (& did camera get created?)
@@ -208,12 +216,15 @@ void MakeItArtMouseApp::update()
     //& normalize the positions to 0. to 1. for easy scaling in processing program
     sendOSC(WHERE_OSCADDRESS, (float)curMousePosLastDown.x/(float)getWindowWidth(), (float)curMousePosLastDown.y/(float)getWindowHeight());
     sendOSC(MOUSEDOWN_OSCADDRESS, isMouseDown);
+    if(squares.size() != 0){
+    sendOSC(PIXELCOUNT_OSCADDRESS, squares[10].getFeatures());
+    }
     
 }
 
 
 //find the difference between 2 frames + some useful image processing
-void MakeItArtMouseApp::frameDifference(cv::Mat &outputImg)
+void MakeItArtApp::frameDifference(cv::Mat &outputImg)
 {
     
     outputImg.data = NULL;
@@ -255,16 +266,23 @@ void MakeItArtMouseApp::frameDifference(cv::Mat &outputImg)
     mPrevFrame = curFrame;
 }
 
-void MakeItArtMouseApp::draw()
+void MakeItArtApp::draw()
 {
     gl::clear( Color( 0, 0, 0 ) );
-
     gl::color( 1, 1, 1, 1 );
-//
+    
 //    if( mTexture )
 //    {
 //        gl::draw( mTexture );
 //    }
+    
+    // When pressed 'd', execute frameDifferencing app
+    if(keyPressed == ' '){
+        FrameDifferencing frameDifferencing;
+        frameDifferencing.configuration('d', 10);
+        frameDifferencing.countPixels(mFrameDifference);
+        squares = frameDifferencing.getSquares();
+    }
     
     //if the frame difference isn't null, draw it.
     if( mFrameDifference.data )
@@ -274,8 +292,8 @@ void MakeItArtMouseApp::draw()
     
 }
 
-CINDER_APP( MakeItArtMouseApp, RendererGl,
-           []( MakeItArtMouseApp::Settings *settings ) //note: this part is to fix the display after updating OS X 1/15/18
+CINDER_APP( MakeItArtApp, RendererGl,
+           []( MakeItArtApp::Settings *settings ) //note: this part is to fix the display after updating OS X 1/15/18
            {
                settings->setHighDensityDisplayEnabled( true );
            } )

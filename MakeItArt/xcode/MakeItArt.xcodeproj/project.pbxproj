@@ -16,11 +16,11 @@
 		00B784B60FF439BC000DE1D7 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00B784B20FF439BC000DE1D7 /* CoreAudio.framework */; };
 		00B9955A1B128DF400A5C623 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00B995581B128DF400A5C623 /* IOKit.framework */; };
 		00B9955B1B128DF400A5C623 /* IOSurface.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00B995591B128DF400A5C623 /* IOSurface.framework */; };
+		2A45F0D1FEE0472D98E65E44 /* Osc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3DC53FC1DBBE434C87DFB4A7 /* Osc.cpp */; };
+		448A5336BF6243F2A35A4457 /* CinderApp.icns in Resources */ = {isa = PBXBuildFile; fileRef = 96A011FCE49540CAA63E3E32 /* CinderApp.icns */; };
 		5323E6B20EAFCA74003A9687 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5323E6B10EAFCA74003A9687 /* CoreVideo.framework */; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
-		C630F29981F8470098365C3D /* CinderApp.icns in Resources */ = {isa = PBXBuildFile; fileRef = EC0281608E60464FB2EA3DFD /* CinderApp.icns */; };
-		D761CDE079AD4FAE9CF53C0F /* Osc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 10D4A86787914146BFD5036A /* Osc.cpp */; };
-		FB00C1319F33420CA5A3B513 /* MakeItArtApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 16672C64BCB2489B9E2E16FD /* MakeItArtApp.cpp */; };
+		B7AE8BBD7CBF44D5B997DB5C /* MakeItArtApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 16EF898E700A42FCAF3CDF3B /* MakeItArtApp.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,19 +33,22 @@
 		00B784B20FF439BC000DE1D7 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		00B995581B128DF400A5C623 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 		00B995591B128DF400A5C623 /* IOSurface.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOSurface.framework; path = System/Library/Frameworks/IOSurface.framework; sourceTree = SDKROOT; };
-		08F315B3357544C0A7035C4B /* MakeItArt_Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = "\"\""; path = MakeItArt_Prefix.pch; sourceTree = "<group>"; };
+		044637B4CE2B491BA947EE64 /* Resources.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Resources.h; path = ../include/Resources.h; sourceTree = "<group>"; };
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
-		10D4A86787914146BFD5036A /* Osc.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = Osc.cpp; path = ../../../cinder_0.9.2_mac/blocks/OSC/src/cinder/osc/Osc.cpp; sourceTree = "<group>"; };
-		16672C64BCB2489B9E2E16FD /* MakeItArtApp.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = MakeItArtApp.cpp; path = ../src/MakeItArtApp.cpp; sourceTree = "<group>"; };
+		16EF898E700A42FCAF3CDF3B /* MakeItArtApp.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = MakeItArtApp.cpp; path = ../src/MakeItArtApp.cpp; sourceTree = "<group>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		3DC53FC1DBBE434C87DFB4A7 /* Osc.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = Osc.cpp; path = ../../../cinder_0.9.2_mac/blocks/OSC/src/cinder/osc/Osc.cpp; sourceTree = "<group>"; };
 		5323E6B10EAFCA74003A9687 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = /System/Library/Frameworks/CoreVideo.framework; sourceTree = "<absolute>"; };
-		71830056889B48ADAE59064A /* Osc.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Osc.h; path = ../../../cinder_0.9.2_mac/blocks/OSC/src/cinder/osc/Osc.h; sourceTree = "<group>"; };
-		847DE24EB3ED4071859A2837 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5639789E4AB04C6CA5D2A75B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		67EBEF406F3B40B79B199ECA /* Osc.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Osc.h; path = ../../../cinder_0.9.2_mac/blocks/OSC/src/cinder/osc/Osc.h; sourceTree = "<group>"; };
+		782B146CEBEA4BAF90F57FE6 /* MakeItArt_Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = "\"\""; path = MakeItArt_Prefix.pch; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* MakeItArt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MakeItArt.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		A75F8D782522B34A000F6FA2 /* CinderOpenCV.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CinderOpenCV.h; path = ../src/CinderOpenCV.h; sourceTree = "<group>"; };
-		C2759121373D4BE88039A1B8 /* Resources.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Resources.h; path = ../include/Resources.h; sourceTree = "<group>"; };
-		EC0281608E60464FB2EA3DFD /* CinderApp.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = CinderApp.icns; path = ../resources/CinderApp.icns; sourceTree = "<group>"; };
+		96A011FCE49540CAA63E3E32 /* CinderApp.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = CinderApp.icns; path = ../resources/CinderApp.icns; sourceTree = "<group>"; };
+		A72FF0B0252CE92E0023E8F4 /* Square.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Square.hpp; path = ../src/Square.hpp; sourceTree = "<group>"; };
+		A72FF0B1252CE92E0023E8F4 /* FrameDifferencing.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = FrameDifferencing.hpp; path = ../src/FrameDifferencing.hpp; sourceTree = "<group>"; };
+		A72FF0B2252CE92E0023E8F4 /* Generator.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Generator.hpp; path = ../src/Generator.hpp; sourceTree = "<group>"; };
+		A7628AD8252605CB009D1DE1 /* CinderOpenCV.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CinderOpenCV.h; path = ../src/CinderOpenCV.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,7 +76,7 @@
 		01B97315FEAEA392516A2CEA /* Blocks */ = {
 			isa = PBXGroup;
 			children = (
-				76A1BCD7F4994ABA87CEB04F /* OSC */,
+				613AE65A88814D0FA4557849 /* OSC */,
 			);
 			name = Blocks;
 			sourceTree = "<group>";
@@ -81,7 +84,7 @@
 		080E96DDFE201D6D7F000001 /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				16672C64BCB2489B9E2E16FD /* MakeItArtApp.cpp */,
+				16EF898E700A42FCAF3CDF3B /* MakeItArtApp.cpp */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -137,9 +140,12 @@
 		29B97315FDCFA39411CA2CEA /* Headers */ = {
 			isa = PBXGroup;
 			children = (
-				A75F8D782522B34A000F6FA2 /* CinderOpenCV.h */,
-				C2759121373D4BE88039A1B8 /* Resources.h */,
-				08F315B3357544C0A7035C4B /* MakeItArt_Prefix.pch */,
+				A72FF0B2252CE92E0023E8F4 /* Generator.hpp */,
+				A72FF0B1252CE92E0023E8F4 /* FrameDifferencing.hpp */,
+				A72FF0B0252CE92E0023E8F4 /* Square.hpp */,
+				A7628AD8252605CB009D1DE1 /* CinderOpenCV.h */,
+				044637B4CE2B491BA947EE64 /* Resources.h */,
+				782B146CEBEA4BAF90F57FE6 /* MakeItArt_Prefix.pch */,
 			);
 			name = Headers;
 			sourceTree = "<group>";
@@ -147,8 +153,8 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				EC0281608E60464FB2EA3DFD /* CinderApp.icns */,
-				847DE24EB3ED4071859A2837 /* Info.plist */,
+				96A011FCE49540CAA63E3E32 /* CinderApp.icns */,
+				5639789E4AB04C6CA5D2A75B /* Info.plist */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -162,37 +168,37 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		76A1BCD7F4994ABA87CEB04F /* OSC */ = {
+		613AE65A88814D0FA4557849 /* OSC */ = {
 			isa = PBXGroup;
 			children = (
-				923162AB9FB64B2988DC231C /* src */,
+				62837513C78141D685C86B5B /* src */,
 			);
 			name = OSC;
 			sourceTree = "<group>";
 		};
-		923162AB9FB64B2988DC231C /* src */ = {
+		62837513C78141D685C86B5B /* src */ = {
 			isa = PBXGroup;
 			children = (
-				CF0A19409E724BAEA7807032 /* cinder */,
+				711F193A3C124016AB0C31C4 /* cinder */,
 			);
 			name = src;
 			sourceTree = "<group>";
 		};
-		B0A655D7FD0240C0B4025588 /* osc */ = {
+		711F193A3C124016AB0C31C4 /* cinder */ = {
 			isa = PBXGroup;
 			children = (
-				10D4A86787914146BFD5036A /* Osc.cpp */,
-				71830056889B48ADAE59064A /* Osc.h */,
-			);
-			name = osc;
-			sourceTree = "<group>";
-		};
-		CF0A19409E724BAEA7807032 /* cinder */ = {
-			isa = PBXGroup;
-			children = (
-				B0A655D7FD0240C0B4025588 /* osc */,
+				773DF2C40C864F049CAEC00C /* osc */,
 			);
 			name = cinder;
+			sourceTree = "<group>";
+		};
+		773DF2C40C864F049CAEC00C /* osc */ = {
+			isa = PBXGroup;
+			children = (
+				3DC53FC1DBBE434C87DFB4A7 /* Osc.cpp */,
+				67EBEF406F3B40B79B199ECA /* Osc.h */,
+			);
+			name = osc;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -247,7 +253,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C630F29981F8470098365C3D /* CinderApp.icns in Resources */,
+				448A5336BF6243F2A35A4457 /* CinderApp.icns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -258,8 +264,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FB00C1319F33420CA5A3B513 /* MakeItArtApp.cpp in Sources */,
-				D761CDE079AD4FAE9CF53C0F /* Osc.cpp in Sources */,
+				B7AE8BBD7CBF44D5B997DB5C /* MakeItArtApp.cpp in Sources */,
+				2A45F0D1FEE0472D98E65E44 /* Osc.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -282,20 +288,15 @@
 					"$(inherited)",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				HEADER_SEARCH_PATHS = (
-					"\"$(CINDER_PATH)/include\"",
-					/usr/local/Cellar/opencv/4.1.2/include/opencv4,
-				);
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
-				LIBRARY_SEARCH_PATHS = /usr/local/Cellar/opencv/4.1.2/lib;
 				OTHER_LDFLAGS = (
 					"\"$(CINDER_PATH)/lib/macosx/$(CONFIGURATION)/libcinder.a\"",
-					"-I/usr/local/Cellar/opencv/4.1.2/include/opencv4/opencv",
-					"-I/usr/local/Cellar/opencv/4.1.2/include/opencv4",
-					"-L/usr/local/Cellar/opencv/4.1.2/lib",
+					"-I/usr/local/Cellar/opencv/4.4.0_2/include/opencv4",
+					"-L/usr/local/Cellar/opencv/4.4.0_2/lib",
 					"-lopencv_gapi",
 					"-lopencv_stitching",
+					"-lopencv_alphamat",
 					"-lopencv_aruco",
 					"-lopencv_bgsegm",
 					"-lopencv_bioinspired",
@@ -309,8 +310,10 @@
 					"-lopencv_fuzzy",
 					"-lopencv_hfs",
 					"-lopencv_img_hash",
+					"-lopencv_intensity_transform",
 					"-lopencv_line_descriptor",
 					"-lopencv_quality",
+					"-lopencv_rapid",
 					"-lopencv_reg",
 					"-lopencv_rgbd",
 					"-lopencv_saliency",
@@ -327,12 +330,13 @@
 					"-lopencv_dnn",
 					"-lopencv_plot",
 					"-lopencv_videostab",
-					"-lopencv_video",
 					"-lopencv_videoio",
+					"-lopencv_viz",
 					"-lopencv_xfeatures2d",
 					"-lopencv_shape",
 					"-lopencv_ml",
 					"-lopencv_ximgproc",
+					"-lopencv_video",
 					"-lopencv_xobjdetect",
 					"-lopencv_objdetect",
 					"-lopencv_calib3d",
@@ -368,20 +372,15 @@
 					"$(inherited)",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				HEADER_SEARCH_PATHS = (
-					"\"$(CINDER_PATH)/include\"",
-					/usr/local/Cellar/opencv/4.1.2/include/opencv4,
-				);
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
-				LIBRARY_SEARCH_PATHS = /usr/local/Cellar/opencv/4.1.2/lib;
 				OTHER_LDFLAGS = (
 					"\"$(CINDER_PATH)/lib/macosx/$(CONFIGURATION)/libcinder.a\"",
-					"-I/usr/local/Cellar/opencv/4.1.2/include/opencv4/opencv",
-					"-I/usr/local/Cellar/opencv/4.1.2/include/opencv4",
-					"-L/usr/local/Cellar/opencv/4.1.2/lib",
+					"-I/usr/local/Cellar/opencv/4.4.0_2/include/opencv4",
+					"-L/usr/local/Cellar/opencv/4.4.0_2/lib",
 					"-lopencv_gapi",
 					"-lopencv_stitching",
+					"-lopencv_alphamat",
 					"-lopencv_aruco",
 					"-lopencv_bgsegm",
 					"-lopencv_bioinspired",
@@ -395,8 +394,10 @@
 					"-lopencv_fuzzy",
 					"-lopencv_hfs",
 					"-lopencv_img_hash",
+					"-lopencv_intensity_transform",
 					"-lopencv_line_descriptor",
 					"-lopencv_quality",
+					"-lopencv_rapid",
 					"-lopencv_reg",
 					"-lopencv_rgbd",
 					"-lopencv_saliency",
@@ -413,12 +414,13 @@
 					"-lopencv_dnn",
 					"-lopencv_plot",
 					"-lopencv_videostab",
-					"-lopencv_video",
 					"-lopencv_videoio",
+					"-lopencv_viz",
 					"-lopencv_xfeatures2d",
 					"-lopencv_shape",
 					"-lopencv_ml",
 					"-lopencv_ximgproc",
+					"-lopencv_video",
 					"-lopencv_xobjdetect",
 					"-lopencv_objdetect",
 					"-lopencv_calib3d",
@@ -448,9 +450,70 @@
 				ENABLE_TESTABILITY = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\"";
+				HEADER_SEARCH_PATHS = (
+					"\"$(CINDER_PATH)/include\"",
+					/usr/local/Cellar/opencv/4.4.0_2/include/opencv4,
+				);
+				LIBRARY_SEARCH_PATHS = /usr/local/Cellar/opencv/4.4.0_2/lib;
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = (
+					"-I/usr/local/Cellar/opencv/4.4.0_2/include/opencv4",
+					"-L/usr/local/Cellar/opencv/4.4.0_2/lib",
+					"-lopencv_gapi",
+					"-lopencv_stitching",
+					"-lopencv_alphamat",
+					"-lopencv_aruco",
+					"-lopencv_bgsegm",
+					"-lopencv_bioinspired",
+					"-lopencv_ccalib",
+					"-lopencv_dnn_objdetect",
+					"-lopencv_dnn_superres",
+					"-lopencv_dpm",
+					"-lopencv_highgui",
+					"-lopencv_face",
+					"-lopencv_freetype",
+					"-lopencv_fuzzy",
+					"-lopencv_hfs",
+					"-lopencv_img_hash",
+					"-lopencv_intensity_transform",
+					"-lopencv_line_descriptor",
+					"-lopencv_quality",
+					"-lopencv_rapid",
+					"-lopencv_reg",
+					"-lopencv_rgbd",
+					"-lopencv_saliency",
+					"-lopencv_sfm",
+					"-lopencv_stereo",
+					"-lopencv_structured_light",
+					"-lopencv_phase_unwrapping",
+					"-lopencv_superres",
+					"-lopencv_optflow",
+					"-lopencv_surface_matching",
+					"-lopencv_tracking",
+					"-lopencv_datasets",
+					"-lopencv_text",
+					"-lopencv_dnn",
+					"-lopencv_plot",
+					"-lopencv_videostab",
+					"-lopencv_videoio",
+					"-lopencv_viz",
+					"-lopencv_xfeatures2d",
+					"-lopencv_shape",
+					"-lopencv_ml",
+					"-lopencv_ximgproc",
+					"-lopencv_video",
+					"-lopencv_xobjdetect",
+					"-lopencv_objdetect",
+					"-lopencv_calib3d",
+					"-lopencv_imgcodecs",
+					"-lopencv_features2d",
+					"-lopencv_flann",
+					"-lopencv_xphoto",
+					"-lopencv_photo",
+					"-lopencv_imgproc",
+					"-lopencv_core",
+				);
 				SDKROOT = macosx;
 				USER_HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\" ../include ../../../cinder_0.9.2_mac/blocks/OSC/src";
 			};
@@ -465,8 +528,69 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\"";
+				HEADER_SEARCH_PATHS = (
+					"\"$(CINDER_PATH)/include\"",
+					/usr/local/Cellar/opencv/4.4.0_2/include/opencv4,
+				);
+				LIBRARY_SEARCH_PATHS = /usr/local/Cellar/opencv/4.4.0_2/lib;
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				OTHER_LDFLAGS = (
+					"-I/usr/local/Cellar/opencv/4.4.0_2/include/opencv4",
+					"-L/usr/local/Cellar/opencv/4.4.0_2/lib",
+					"-lopencv_gapi",
+					"-lopencv_stitching",
+					"-lopencv_alphamat",
+					"-lopencv_aruco",
+					"-lopencv_bgsegm",
+					"-lopencv_bioinspired",
+					"-lopencv_ccalib",
+					"-lopencv_dnn_objdetect",
+					"-lopencv_dnn_superres",
+					"-lopencv_dpm",
+					"-lopencv_highgui",
+					"-lopencv_face",
+					"-lopencv_freetype",
+					"-lopencv_fuzzy",
+					"-lopencv_hfs",
+					"-lopencv_img_hash",
+					"-lopencv_intensity_transform",
+					"-lopencv_line_descriptor",
+					"-lopencv_quality",
+					"-lopencv_rapid",
+					"-lopencv_reg",
+					"-lopencv_rgbd",
+					"-lopencv_saliency",
+					"-lopencv_sfm",
+					"-lopencv_stereo",
+					"-lopencv_structured_light",
+					"-lopencv_phase_unwrapping",
+					"-lopencv_superres",
+					"-lopencv_optflow",
+					"-lopencv_surface_matching",
+					"-lopencv_tracking",
+					"-lopencv_datasets",
+					"-lopencv_text",
+					"-lopencv_dnn",
+					"-lopencv_plot",
+					"-lopencv_videostab",
+					"-lopencv_videoio",
+					"-lopencv_viz",
+					"-lopencv_xfeatures2d",
+					"-lopencv_shape",
+					"-lopencv_ml",
+					"-lopencv_ximgproc",
+					"-lopencv_video",
+					"-lopencv_xobjdetect",
+					"-lopencv_objdetect",
+					"-lopencv_calib3d",
+					"-lopencv_imgcodecs",
+					"-lopencv_features2d",
+					"-lopencv_flann",
+					"-lopencv_xphoto",
+					"-lopencv_photo",
+					"-lopencv_imgproc",
+					"-lopencv_core",
+				);
 				SDKROOT = macosx;
 				USER_HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\" ../include ../../../cinder_0.9.2_mac/blocks/OSC/src";
 			};
