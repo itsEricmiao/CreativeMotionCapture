@@ -92,7 +92,7 @@ class MakeItArtApp : public App {
     osc::SenderUdp                mSender; //sends the OSC via the UDP protocol
     void sendOSC(std::string addr, float x, float y); //sending the OSC values
     void sendOSC(std::string addr, float down);//just one -- this is inelegant but effective for now
-    void sendOSC(std::string addr, int featuresCount);
+    void sendOSC(std::string addr, vector<Square> allSquares);
     
     void frameDifference(cv::Mat &outputImg);
 };
@@ -142,13 +142,18 @@ void MakeItArtApp::sendOSC(std::string addr, float down) //sending the OSC value
     mSender.send(msg);
 }
 
-void MakeItArtApp:: sendOSC(std::string addr, int featuresCount)
+void MakeItArtApp:: sendOSC(std::string addr, vector<Square> allSquares)
 {
     osc::Message msg;
     msg.setAddress(addr); //sets the address
-//    featuresCount = int(featuresCount) + int(rand()%100); // will change later
-    cout<<"featuresCount: "<<featuresCount<<endl;
-    msg.append(float(featuresCount));
+    int max = 0;
+    for (int i = 0; i < allSquares.size(); i++){
+        msg.append(allSquares[i].getFeatures());
+        if(allSquares[i].getFeatures() > max){
+            max = allSquares[i].getFeatures();
+        }
+    }
+    cout<<allSquares.size()<<endl;
     mSender.send(msg);
 }
 
@@ -190,6 +195,7 @@ void MakeItArtApp::keyDown( KeyEvent event )
     {
         cout<<"Key 'space' is pressed"<<endl;
         keyPressed = ' ';
+        
         //TODO: do a thing. Like save the current frame.
     }
 
@@ -212,12 +218,13 @@ void MakeItArtApp::update()
         
     }
     
+    
     //send the OSC re: mouse values
     //& normalize the positions to 0. to 1. for easy scaling in processing program
     sendOSC(WHERE_OSCADDRESS, (float)curMousePosLastDown.x/(float)getWindowWidth(), (float)curMousePosLastDown.y/(float)getWindowHeight());
     sendOSC(MOUSEDOWN_OSCADDRESS, isMouseDown);
     if(squares.size() != 0){
-    sendOSC(PIXELCOUNT_OSCADDRESS, squares[10].getFeatures());
+        sendOSC(PIXELCOUNT_OSCADDRESS, squares);
     }
     
 }
@@ -270,19 +277,19 @@ void MakeItArtApp::draw()
 {
     gl::clear( Color( 0, 0, 0 ) );
     gl::color( 1, 1, 1, 1 );
-    
-//    if( mTexture )
-//    {
-//        gl::draw( mTexture );
-//    }
-    
-    // When pressed 'd', execute frameDifferencing app
     if(keyPressed == ' '){
         FrameDifferencing frameDifferencing;
         frameDifferencing.configuration('d', 10);
         frameDifferencing.countPixels(mFrameDifference);
         squares = frameDifferencing.getSquares();
     }
+//    if( mTexture )
+//    {
+//        gl::draw( mTexture );
+//    }
+    
+    // When pressed 'd', execute frameDifferencing app
+    
     
     //if the frame difference isn't null, draw it.
     if( mFrameDifference.data )
