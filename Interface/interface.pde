@@ -9,6 +9,7 @@ import oscP5.*;
 import ddf.minim.*;
 import ddf.minim.ugens.*;
 
+
 Minim minim; //the minimum object
 AudioOutput out; //our audio out
 
@@ -18,6 +19,7 @@ NetAddress remoteLocation; //where we are receiving OSC from
 
 float downValue; //is the mouse down?
 ArrayList<Integer> count = new ArrayList<Integer>(); //this is for storing all features from opencv
+
 //where the mouse is on the screen in %, that is 0.-0.1
 float x; 
 float y; 
@@ -39,12 +41,14 @@ final float HALF_SECOND = 500;
 final float QUARTER_SECOND = 500;
 
 //the last time we played a note... let's not play too many at once and overload the system
-float lastPlayed = 0; 
+
   
 void setup()
 {
   size(640, 480); 
   background(255);  
+  minim = new Minim(this);
+  out = minim.getLineOut();
   oscP5 = new OscP5(this, LISTENING_PORT); //listening for incoming!!
 }
 
@@ -95,12 +99,13 @@ void showInstruction(){
 
 void reset(){
   setup();
+  fill(0, 102, 153, 51);
+  text("please press any key of 'a', 'b' or 'c'", 10, 60);
   // Doesn't do anything yet.
 }
 
 void display(){
-  float timeBetween =  millis()-lastPlayed; //time between last time it was played
-  
+
   int squareHeight = height/N; // width of square height
   int squareWidth = width/N; // width of square width
   
@@ -110,6 +115,9 @@ void display(){
    reset();
    return;
   }
+  
+  float lastPlayed = 0; 
+  
   
   for(int i = 0; i < count.size(); i++){
     int val = count.get(i);
@@ -127,30 +135,45 @@ void display(){
       // if pressed 'd', show color
       if(key == 'd'){
         println("key d is pressed");
-        fill(random(255),random(255),random(255),random(20));
+        int c1 =  int(val) % int(300 + random(10)); 
+        int c2 =  int(val) % int(200 + random(10)); 
+        int c3 =  int(val) % int(100 + random(10)); 
+        int t =   int(val) % int(20 + random(5));
+        //fill(random(255),random(255),random(255),random(20));
+        fill(c1,c2,c3,t);
+        
       }
       
-      rect(x, y, squareWidth, squareHeight);
+      rect(x, y, squareWidth, squareHeight); // draw the squares
       
-      // playing note based on # of features in the square
-      if(timeBetween>=QUARTER_SECOND){
-       //out.playNote( 0.0, 0.5, new ToneInstrument( float(count.get(0) % 100.0), 0.2f ));
-       println("playing notes based on normalization valued: ", count.get(i) % 100.0);
+      float timeBetween =  millis() - lastPlayed; 
+      if(timeBetween % 10 == 0){
+       float note = findNote(count.get(i));
+       out.playNote( 0.0, 0.1, new ToneInstrument( note, 0.2f ));
+       println("playing notes based on normalization valued: ",note);
+       println("millis(): ", millis(), "  lastPlayed: ",lastPlayed, "  timeBetween: ",timeBetween);
+       timeBetween = 0;
       }
     }
   }
 }
 
-
-
-void playNotes(int value){
-  float timeBetween =  millis()-lastPlayed; //time between last time it was played
-  //if the timebetween is longer than a 0.25 sec, then play
-  //so pitches is an array list of pitches
-  //so we multiply the y value times the # of pitches to get which pitch to select
-  //since y is 0.0 to 1.0 it will give us the index into pitches. higher y - higher pitch. (see IndexToPitches class)
+float findNote(int val){
+  float newVal;
+  if(val > 1000 && val < 5000){
+    newVal = 400.0f + random(50);
+  }
+  else if(val > 5000 && val < 10000){
+    newVal = 500.0f + random(50);
+  }
+  else{
+    newVal = 550.0f + random(50);
+  }
   
+  return newVal;
 }
+
+
 
 
 

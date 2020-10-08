@@ -153,7 +153,8 @@ void MakeItArtApp:: sendOSC(std::string addr, vector<Square> allSquares)
             max = allSquares[i].getFeatures();
         }
     }
-    cout<<allSquares.size()<<endl;
+    cout<<"number of features: "<<allSquares.size()<<endl;
+    cout<<"max val in current features: "<<max<<endl;
     mSender.send(msg);
 }
 
