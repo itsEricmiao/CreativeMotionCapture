@@ -42,10 +42,13 @@ final float QUARTER_SECOND = 500;
 
 //the last time we played a note... let's not play too many at once and overload the system
 
-  
+void settings() {
+  size(640, 480); 
+}
+
 void setup()
 {
-  size(640, 480); 
+  
   background(255);  
   minim = new Minim(this);
   out = minim.getLineOut();
@@ -134,7 +137,6 @@ void display(){
       
       // if pressed 'd', show color
       if(key == 'd'){
-        println("key d is pressed");
         int c1 =  int(val) % int(300 + random(10)); 
         int c2 =  int(val) % int(200 + random(10)); 
         int c3 =  int(val) % int(100 + random(10)); 
