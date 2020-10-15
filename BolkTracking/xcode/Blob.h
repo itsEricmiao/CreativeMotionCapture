@@ -25,6 +25,14 @@ public:
 //        lastIndex = -1;
     }
     
+    cv::KeyPoint getKeyPoint(){
+        return keyPoint;
+    }
+    
+    int getID(){
+        return b_id;
+    }
+    
 //changes the location of the blob -- useful for tracking
     void update(cv::KeyPoint pt)
     {

@@ -51,6 +51,7 @@
 #define MAX_FEATURES 300
 #define WINDOW_WIDTH 640
 #define WINDOW_HEIGHT 480
+#define MINDIS 100
 
 using namespace ci;
 using namespace ci::app;
@@ -61,7 +62,8 @@ public:
     void setup() override;
 //    void mouseDown( MouseEvent event ) override;
     void keyDown( KeyEvent event ) override;
-    
+    void blobTracking();
+    void updateBlobList();
     void update() override;
     void draw() override;
     
@@ -73,6 +75,9 @@ protected:
     
     cv::Ptr<cv::SimpleBlobDetector>     mBlobDetector; //the object that does the blob detection
     std::vector<cv::KeyPoint>   mKeyPoints; //the center points of the blobs (current, previous, and before that) & how big they are.
+    std::vector<int> mMapPrevToCurKeypoints; // maps where points in (mKeypoints) to where they were in (mPrevKeypoints)
+    
+
     
     cv::Mat                     mCurFrame, mBackgroundSubtracted; //current frame & frame with background subtracted in OCV format
     cv::Mat                     mSavedFrame; //the frame saved for use for simple background subtraction
@@ -80,15 +85,13 @@ protected:
     cv::Ptr<cv::BackgroundSubtractor> mBackgroundSubtract; //the background subtraction object that does subtractin'
     
     std::vector<Blob>           mBlobs; ///the blobs found in the current frame
-    
+    std::vector<cv::KeyPoint>   mPrevKeypoints;
     
     enum BackgroundSubtractionState {NONE=0, OPENCV=2, SAVEDFRAME=3};
     BackgroundSubtractionState mUseBackgroundSubtraction;
     
     void blobDetection(BackgroundSubtractionState useBackground); //does our blob detection
     void createBlobs(); //creates the blob objects for each keypoint
-
-    
     int newBlobID; //the id to assign a new blob.
 
     
@@ -206,8 +209,9 @@ void BlobTrackingApp::blobDetection(BackgroundSubtractionState useBackground = B
     
     //note the parameters: the frame that you would like to detect the blobs in - an input frame
     //& 2nd, the output -- a vector of points, the center points of each blob.
+    mPrevKeypoints = mKeyPoints;
     mBlobDetector->detect(frame, mKeyPoints);
-
+//
 }
 
 void BlobTrackingApp::update()
@@ -231,6 +235,56 @@ void BlobTrackingApp::update()
     
     //create blob objects from keypoints
     createBlobs();
+    mMapPrevToCurKeypoints.clear();
+    blobTracking();
+//    for(int i = 0; i < mMapPrevToCurKeypoints.size(); i++){
+//        cout<<mMapPrevToCurKeypoints[i]<<" ";
+//    }
+//    cout<<endl;
+    updateBlobList();
+}
+
+
+void BlobTrackingApp::blobTracking(){
+    cout<<"\n\nEntering blob Tracking"<<endl;
+//  Find the closest point (point with minimum distance) in mPrevKeypoints for each keypoint in mKeypoints.
+    for(int i = 0; i < mKeyPoints.size(); i++){
+        for(int j = 0; j < mPrevKeypoints.size(); j++){
+            cv::KeyPoint curPos = mKeyPoints[i];
+            cv::KeyPoint prevPos = mPrevKeypoints[j];
+            float distance = ci::distance(fromOcv(curPos.pt), fromOcv(prevPos.pt));
+            if(distance < MINDIS){
+                mMapPrevToCurKeypoints.push_back(i);
+            }else{
+                mMapPrevToCurKeypoints.push_back(-1);
+            }
+        }
+        
+    }
+}
+
+void BlobTrackingApp::updateBlobList(){
+    std::vector<Blob> prevBlobs;
+    prevBlobs = mBlobs;
+    mBlobs.clear();
+    for(int i = 0; i < mMapPrevToCurKeypoints.size(); i++){
+        if (mMapPrevToCurKeypoints[i] == -1){
+            //  then create a new Blob and add to mBlobs
+            mBlobs.push_back(Blob(mKeyPoints[i], newBlobID));
+            newBlobID++;
+            
+        }else{
+            // access from the prevBlobs using the value from mMapPrevToCurKeypoints.
+            // update that old blob with the new keypoint from mKeyPoints
+            // Then add to mBlobs.
+            for(int j = 0; j < prevBlobs.size(); j++){
+                if(prevBlobs[j].getID() == mMapPrevToCurKeypoints[i]){
+                    prevBlobs[j].update(mKeyPoints[i]);
+                }
+            }
+        }
+    }
+    
 }
 
 void BlobTrackingApp::createBlobs()
@@ -276,3 +330,7 @@ CINDER_APP( BlobTrackingApp, RendererGl,
                settings->setWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
                //               settings->setFrameRate(FRAMERATE); //set fastest framerate
                } )
+
+
+
+
