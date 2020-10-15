@@ -51,7 +51,7 @@
 #define MAX_FEATURES 300
 #define WINDOW_WIDTH 640
 #define WINDOW_HEIGHT 480
-#define MINDIS 100
+#define MINDIS 80
 
 using namespace ci;
 using namespace ci::app;
@@ -66,6 +66,7 @@ public:
     void updateBlobList();
     void update() override;
     void draw() override;
+    void printPrevAndCurKeys();
     
 protected:
     CaptureRef                 mCapture; //the camera capture object
@@ -209,8 +210,13 @@ void BlobTrackingApp::blobDetection(BackgroundSubtractionState useBackground = B
     
     //note the parameters: the frame that you would like to detect the blobs in - an input frame
     //& 2nd, the output -- a vector of points, the center points of each blob.
-    mPrevKeypoints = mKeyPoints;
+    
+    mPrevKeypoints = mKeyPoints; // save the previous mKeyPoints into a variable
+    
     mBlobDetector->detect(frame, mKeyPoints);
+    
+   
+    
 //
 }
 
@@ -237,29 +243,29 @@ void BlobTrackingApp::update()
     createBlobs();
     mMapPrevToCurKeypoints.clear();
     blobTracking();
-//    for(int i = 0; i < mMapPrevToCurKeypoints.size(); i++){
-//        cout<<mMapPrevToCurKeypoints[i]<<" ";
-//    }
-//    cout<<endl;
     updateBlobList();
 }
 
 
 void BlobTrackingApp::blobTracking(){
-    cout<<"\n\nEntering blob Tracking"<<endl;
+
 //  Find the closest point (point with minimum distance) in mPrevKeypoints for each keypoint in mKeypoints.
     for(int i = 0; i < mKeyPoints.size(); i++){
+        int index = -1;
+        int min = 10000;
         for(int j = 0; j < mPrevKeypoints.size(); j++){
             cv::KeyPoint curPos = mKeyPoints[i];
             cv::KeyPoint prevPos = mPrevKeypoints[j];
             float distance = ci::distance(fromOcv(curPos.pt), fromOcv(prevPos.pt));
-            if(distance < MINDIS){
-                mMapPrevToCurKeypoints.push_back(i);
-            }else{
-                mMapPrevToCurKeypoints.push_back(-1);
+            if(distance <= MINDIS && distance < min){
+                min = distance;
+                index = i;
             }
         }
-        
+        if(index != -1){
+            cout<<"Match: "<<mKeyPoints[i].pt<<"With: "<<mPrevKeypoints[index].pt<<endl;
+        }
+        mMapPrevToCurKeypoints.push_back(index);
     }
 }
 
@@ -272,7 +278,6 @@ void BlobTrackingApp::updateBlobList(){
             //  then create a new Blob and add to mBlobs
             mBlobs.push_back(Blob(mKeyPoints[i], newBlobID));
             newBlobID++;
-            
         }else{
             // access from the prevBlobs using the value from mMapPrevToCurKeypoints.
             // update that old blob with the new keypoint from mKeyPoints
@@ -280,6 +285,8 @@ void BlobTrackingApp::updateBlobList(){
             for(int j = 0; j < prevBlobs.size(); j++){
                 if(prevBlobs[j].getID() == mMapPrevToCurKeypoints[i]){
                     prevBlobs[j].update(mKeyPoints[i]);
+                    mBlobs.push_back(Blob(prevBlobs[j].getKeyPoint(), newBlobID));
+                    newBlobID++;
                 }
             }
         }
@@ -320,6 +327,24 @@ void BlobTrackingApp::draw()
     {
         mBlobs[i].draw();
     }
+}
+
+
+void BlobTrackingApp::printPrevAndCurKeys(){
+    //--------------------------------- Test -----------------------------------
+        cout<<"prev keypoints: "<<endl;
+        for(int i = 0; i < mPrevKeypoints.size(); i++)
+        {
+            cout<<mPrevKeypoints[i].pt<<endl;
+        }
+        cout<<"current keypoints: "<<endl;
+        for(int j = 0; j < mPrevKeypoints.size(); j++)
+        {
+            cout<<mKeyPoints[j].pt<<endl;
+        }
+        cout<<endl;
+        cout<<endl;
+    //---------------------------------------------------------------------------
 }
 
 CINDER_APP( BlobTrackingApp, RendererGl,
