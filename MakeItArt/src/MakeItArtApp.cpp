@@ -1,27 +1,11 @@
 
 /*
- 
- Programmer: Courtney Brown
- Date: c2019
- Notes: Demonstration of sending OSC processing and creating artistic application using our previous code
+ Programmer: Eric Miao
+ Date: Oct 2020
+ Notes: Sending OSC processing and creating artistic application using our previous code
  Purpose/Description:
- 
- This program sends values from the mouse to another program.
- 
- Uses:
- 
- osc::Sender -- sends OSC messages from one program to another (incl. those running on another computer)
- 
- Note: still does frame-differencing.
- 
- TODO: (for you, student!)
- ++add your squares class
- ++find values to send from your squares class
-    ++either use frame-differencing or optical flow to send data (choose one)
-    ++must use a feature (eg. find max or min of each square + the location + send) to make an art or sound thing happen.
-    ++note that this example uses the mouse locations but you must sub. your mocap squares info.
- 
- */
+ Generating squares (and color) in Processing based on the number of features detected
+*/
 
 
 #include <opencv2/core/core.hpp>
@@ -142,6 +126,8 @@ void MakeItArtApp::sendOSC(std::string addr, float down) //sending the OSC value
     mSender.send(msg);
 }
 
+// This function will send the number of features detected to the Processing Interface class,
+// I also output the max number features here
 void MakeItArtApp:: sendOSC(std::string addr, vector<Square> allSquares)
 {
     osc::Message msg;

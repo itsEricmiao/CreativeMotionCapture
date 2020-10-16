@@ -1,9 +1,7 @@
 //Programmer: Eric Miao
 //Desc: 
-//Draw squares to the window based on motion detected by user
+//Draw squares to the window and play notes based on the motion detected from Opencv code
 
-//Go to the top menu Sketch->Import Library
-//then search for oscP5 and import that
 import netP5.*;
 import oscP5.*;
 import ddf.minim.*;
@@ -100,6 +98,7 @@ void showInstruction(){
 }
 
 
+//reset the program
 void reset(){
   setup();
   fill(0, 102, 153, 51);
@@ -160,6 +159,7 @@ void display(){
   }
 }
 
+// generate the note based on the feature detected
 float findNote(int val){
   float newVal;
   if(val > 1000 && val < 5000){
