@@ -62,7 +62,6 @@ class MakeItArtApp : public App {
     ci::vec2 curMousePosLastDown;
     bool isMouseDown;
 
-    
   protected:
     CaptureRef                 mCapture;
     gl::TextureRef             mTexture;
@@ -71,6 +70,7 @@ class MakeItArtApp : public App {
     cv::Mat                    mPrevFrame;
     cv::Mat                    mFrameDifference;
     ci::SurfaceRef             mSurface;
+    
     
     //Sending OSC
     osc::SenderUdp                mSender; //sends the OSC via the UDP protocol
@@ -91,14 +91,13 @@ void MakeItArtApp::mouseDrag( MouseEvent event)
 {
     curMousePosLastDown = event.getPos();
     isMouseDown = true;
-    
 }
+
 //sets the mouse down values
 void MakeItArtApp::mouseDown( MouseEvent event)
 {
     curMousePosLastDown = event.getPos();
     isMouseDown = true;
-
 }
 
 
@@ -118,6 +117,7 @@ void MakeItArtApp::sendOSC(std::string addr, float x, float y) //sending the OSC
     mSender.send(msg);
 }
 
+
 void MakeItArtApp::sendOSC(std::string addr, float down) //sending the OSC values
 {
     osc::Message msg;
@@ -125,6 +125,7 @@ void MakeItArtApp::sendOSC(std::string addr, float down) //sending the OSC value
     msg.append(down);
     mSender.send(msg);
 }
+
 
 // This function will send the number of features detected to the Processing Interface class,
 // I also output the max number features here
@@ -144,6 +145,7 @@ void MakeItArtApp:: sendOSC(std::string addr, vector<Square> allSquares)
     mSender.send(msg);
 }
 
+
 //initialization
 void MakeItArtApp::setup()
 {
@@ -151,26 +153,22 @@ void MakeItArtApp::setup()
     try{
         mSender.bind();
     }
-    catch( osc::Exception &e)
-    {
+    catch( osc::Exception &e){
         CI_LOG_E( "Error binding" << e.what() << " val: " << e.value() );
         quit();
     }
     
     //set up our camera
-    try {
+    try{
         mCapture = Capture::create(640, 480); //first default camera
         mCapture->start();
     }
-    catch( ci::Exception &exc)
-    {
+    catch( ci::Exception &exc){
         CI_LOG_EXCEPTION( "Failed to init capture ", exc );
     }
     
-
     mPrevFrame.data = NULL;
     mFrameDifference.data = NULL;
-    
 }
 
 void MakeItArtApp::keyDown( KeyEvent event )
@@ -185,7 +183,6 @@ void MakeItArtApp::keyDown( KeyEvent event )
         
         //TODO: do a thing. Like save the current frame.
     }
-
 }
 
 void MakeItArtApp::update()
@@ -202,7 +199,7 @@ void MakeItArtApp::update()
         
         //do the frame-differencing
         frameDifference(mFrameDifference);
-        
+
     }
     
     
