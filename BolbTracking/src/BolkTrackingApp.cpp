@@ -60,8 +60,11 @@ using namespace std;
 //set up our OSC addresses
 #define WHERE_OSC_ADDRESS "/MakeItArt/Where"
 #define DOWN_OSC_ADDRESS "/MakeItArt/Down"
-//#define BLOB_OSCADDRESS "/MakeItArt/Blob"
-
+#define BLOB_OSC_ADDRESS "/MakeItArt/Blobs"
+#define SIZE_OSC_ADDRESS "/MakeItArt/Size"
+#define PREVB_OSC_ADDRESS "/MakeItArt/PrevBlobs"
+#define MAP_OSC_ADDRESS "/MakeItArt/Map"
+#define SPEED_OSC_ADDRESS "/MakeItArt/Speed"
 
 class BlobTrackingApp : public App {
 public:
@@ -108,12 +111,16 @@ protected:
     void blobDetection(BackgroundSubtractionState useBackground); //does our blob detection
     void createBlobs(); //creates the blob objects for each keypoint
     int newBlobID; //the id to assign a new blob.
-    
+    void getSpeed();
+    float speed;
     
     osc::SenderUdp                mSender; //sends the OSC via the UDP protocol
     void sendOSC(std::string addr, float x, float y); //sending the OSC values
     void sendOSC(std::string addr, float down);//just one -- this is inelegant but effective for now
-   
+    void sendOSC(std::string addr, Blob blob); // sending the blobs
+    void sendOSC(std::string addr, int size); // sending the size
+    void sendOSC(std::string addr, cv::KeyPoint key);
+    void sendOSC(std::string addr, vector<int> map);
 };
 
 BlobTrackingApp::BlobTrackingApp() : mSender(LOCALPORT, DESTHOST, DESTPORT) //initializing our class variables
@@ -160,6 +167,46 @@ void BlobTrackingApp::sendOSC(std::string addr, float down) //sending the OSC va
     mSender.send(msg);
 }
 
+void BlobTrackingApp::sendOSC(std::string addr, Blob blob) //sending the OSC values
+{
+    osc::Message msg;
+    msg.setAddress(addr); //sets the address
+    cv::KeyPoint pos = blob.getKeyPoint();
+    float id = blob.getID();
+    float x = pos.pt.x;
+    float y = pos.pt.y;
+    msg.append(id);
+    msg.append(x);
+    msg.append(y);
+    mSender.send(msg);
+}
+
+void BlobTrackingApp::sendOSC(std::string addr, int size){
+    osc::Message msg;
+    msg.setAddress(addr); //sets the address
+    msg.append(size);
+    mSender.send(msg);
+}
+
+void BlobTrackingApp::sendOSC(std::string addr, cv::KeyPoint key){
+    osc::Message msg;
+    msg.setAddress(addr); //sets the address
+    float x = key.pt.x;
+    float y = key.pt.y;
+    msg.append(x);
+    msg.append(y);
+    mSender.send(msg);
+}
+
+
+void BlobTrackingApp::sendOSC(std::string addr, vector<int> map){
+    osc::Message msg;
+    msg.setAddress(addr); //sets the address
+    for(int i = 0; i < map.size(); i++){
+        msg.append(map[i]);
+    }
+    mSender.send(msg);
+}
 
 void BlobTrackingApp::setup()
 {
@@ -311,15 +358,28 @@ void BlobTrackingApp::update()
 
     sendOSC(WHERE_OSC_ADDRESS, (float)curMousePosLastDown.x/(float)getWindowWidth(),(float)curMousePosLastDown.y/(float)getWindowHeight());
     sendOSC(DOWN_OSC_ADDRESS, isMouseDown);
+    int size = mKeyPoints.size();
+    sendOSC(SIZE_OSC_ADDRESS, size);
+    
+    for(int i = 0; i < mPrevKeypoints.size(); i++){
+        sendOSC(PREVB_OSC_ADDRESS, mPrevKeypoints[i]);
+    }
+    
+    for(int i = 0; i < mBlobs.size(); i++){
+        sendOSC(BLOB_OSC_ADDRESS, mBlobs[i]);
+    }
+    sendOSC(MAP_OSC_ADDRESS, mMapPrevToCurKeypoints);
+    sendOSC(SPEED_OSC_ADDRESS, speed);
     
     //update all our blob info
-//    blobDetection(mUseBackgroundSubtraction);
+    blobDetection(mUseBackgroundSubtraction);
     
     //create blob objects from keypoints
-//    createBlobs();
-//    mMapPrevToCurKeypoints.clear();
-//    blobTracking();
-//    updateBlobList();
+    createBlobs();
+    mMapPrevToCurKeypoints.clear();
+    blobTracking();
+    getSpeed();
+    updateBlobList();
     
     
 }
@@ -350,18 +410,18 @@ void BlobTrackingApp::blobTracking(){
         std::cout << "*********************\n";
         std::cout << "mMapPrevToCurKeypoints: " << mMapPrevToCurKeypoints.size() << std::endl ;
         for(int i=0; i<mMapPrevToCurKeypoints.size(); i++){
-            std::cout <<mMapPrevToCurKeypoints[i] << "  ";
+            std::cout <<mMapPrevToCurKeypoints[i] <<"-";
         }
         std::cout << std::endl;
         std::cout << "mKeyPoints: "  ;
         for(int k=0; k<mKeyPoints.size(); k++){
-            std::cout <<mKeyPoints[k].pt.x << "," <<mKeyPoints[k].pt.y << "  ";
+            std::cout <<mKeyPoints[k].pt.x << "," <<mKeyPoints[k].pt.y << "   ";
         }
         
         std::cout << std::endl;
         std::cout << "mPrevKeyPoints: "  ;
         for(int k=0; k<mPrevKeypoints.size(); k++){
-            std::cout  << mPrevKeypoints[k].pt.x << "," <<mPrevKeypoints[k].pt.y << " ";
+            std::cout  << mPrevKeypoints[k].pt.x << "," <<mPrevKeypoints[k].pt.y << "  ";
         }
         std::cout << std::endl;
         std::cout << " KeyPoints: " << mKeyPoints.size() << std::endl;
@@ -403,6 +463,25 @@ void BlobTrackingApp::createBlobs()
     {
         mBlobs.push_back(Blob(mKeyPoints[i], newBlobID));
         newBlobID++;
+    }
+}
+
+void BlobTrackingApp::getSpeed(){
+    for(int i=0; i< mMapPrevToCurKeypoints.size(); i++){
+        speed =0;
+        int ind=mMapPrevToCurKeypoints[i];
+        //if value is -1, calculate velocity
+        if(ind!=-1)
+        {
+            int x1= mKeyPoints[i].pt.x;
+            int x2=  mPrevKeypoints[i].pt.x;
+            int y1= mKeyPoints[i].pt.y;
+            int y2=  mPrevKeypoints[i].pt.y;
+            int xs=(x1-x2);
+            int ys=(y1-y2);
+            //calculate velocity
+            speed =(sqrt((pow(xs, 2)+(pow(ys, 2)))));
+        }
     }
 }
 

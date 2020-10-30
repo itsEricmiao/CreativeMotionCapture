@@ -13,7 +13,9 @@ class Blob
   ArrayList<Float> allY = new ArrayList(); //the history of the y value, incl. current
   float blobsID = 0; //the id from C++ -- you don't really need this here bc its in a list in the main, BUT good to have for debugging just in case!!
   int blobsAlive = 0; //when was it last updated?
-  
+  float transparency = 1;
+  float dtrans;
+
   //create with this info.
   Blob(float id, float x, float y)
   {
@@ -44,9 +46,15 @@ class Blob
   void draw()
   {
     stroke(0); 
-    fill(255);
-    for(int j=0; j<x().size(); j++)
-      circle(x().get(j), y().get(j), 50 ); 
+    dtrans = -0.01;
+    for(int j=0; j<x().size(); j++){
+      //fill(abs(noise(x/nScale, y/nScale, zoff)-noise(x/nScale, y/nScale, zoff+zdiff))*255*2);
+      //x().get(j), y().get(j)
+      float a = map(transparency, 0, 1, 0, 255);
+      fill(0, 0, 255, a);
+      ellipse(x().get(j), y().get(j), 150, 150);
+      transparency += dtrans;
+    }
   }
   
    //every time update gets called, we take away one from blobsAlive to note that it is a frame older

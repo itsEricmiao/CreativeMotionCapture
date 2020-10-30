@@ -8,6 +8,14 @@ import oscP5.*;
 import ddf.minim.*;
 import ddf.minim.ugens.*;
 
+float speed = 0;
+float nScale = 50;
+float pSize = 50;
+float zoff = 0;
+float zdiff = 0;
+
+
+
 Minim minim; //the minimum object
 AudioOutput out; //our audio out
 IndexToPitches pitches = new IndexToPitches(); //an array list of the hertz of pitches from C2-C4
@@ -20,12 +28,17 @@ float downValue; //is the mouse down?
 //where the mouse is on the screen in %, that is 0.-1.0
 float x; 
 float y; 
+int size;
 
 //the OSC addresses we are receiving
 //MUST match what we are sending
 final String DOWN_OSC_ADDRESS = "/MakeItArt/Down"; //is the mouse down? 0-no, 1-yes
 final String WHERE_OSC_ADDRESS = "/MakeItArt/Where"; //where is the mouse down? x & y in 0.0-1.0 values
-final String BLOB_OSCADDRESS = "/MakeItArt/Blobs"; 
+final String BLOB_OSC_ADDRESS = "/MakeItArt/Blobs"; 
+final String SIZE_OSC_ADDRESS = "/MakeItArt/Size"; 
+final String PREVB_OSC_ADDRESS = "/MakeItArt/PrevBlobs"; 
+final String MAP_OSC_ADDRESS = "/MakeItArt/Map";
+final String SPEED_OSC_ADDRESS = "/MakeItArt/Speed";
 
 //The port we are listening to... MUST match DESTPORT in the C++ example 
 final int LISTENING_PORT = 8888;
@@ -40,7 +53,8 @@ float lastPlayed = 0;
 //my homemade Dictionary object -- feel free to sub if you are familiar & want to but if not, can leave as is
 ArrayList<Blob> blobs = new ArrayList(); //all the blobs I found
 ArrayList<Float> blobsID = new ArrayList(); //a quick hack so I don't have to write a find method
-
+ArrayList<Blob> prevBlobs = new ArrayList();
+ArrayList<Integer> map = new ArrayList();
 int newBlobs = 0; //how many new blobs this frame? 
 
 int WHEN_A_BLOB_IS_DEAD = -100; 
@@ -67,11 +81,21 @@ void killBlobs()
          blobsID.remove(i);
       }
     }
+    for(int i=prevBlobs.size()-1; i>=0; i--)
+    {             
+         prevBlobs.remove(i);    
+    }
+    
+        for(int i=map.size()-1; i>=0; i--)
+    {             
+         map.remove(i);    
+    }
 }
 
 //sets up OSC & the sound library Minim
 void setup()
 {
+  frameRate(10);
   size(640, 480); //NOTE: I made the size of the screen match the size of the C++ screen so I don't calculate anything extra. 
   background(255);  
   
@@ -92,30 +116,37 @@ void oscEvent(OscMessage msg)
   String addr = msg.addrPattern(); //get the address
   
   int numberOfParamsPerMessage = 4; //change this number depending on how many features you send per blob
-  if( addr.equals(DOWN_OSC_ADDRESS)){
-     downValue = msg.get(0).floatValue();   
+  if(addr.equals(PREVB_OSC_ADDRESS)){
+     float prev_X = msg.get(0).floatValue(); 
+     float prev_Y = msg.get(1).floatValue(); 
+     Blob b = new Blob(0,prev_X, prev_Y);
+     prevBlobs.add(b);
   }
   
-  else if(addr.equals(WHERE_OSC_ADDRESS)){
-     x = msg.get(0).floatValue(); 
-     y = msg.get(1).floatValue(); 
+  else if(addr.equals(SIZE_OSC_ADDRESS)){
+    size = msg.get(0).intValue();
   }
   
+  else if(addr.equals(MAP_OSC_ADDRESS)){
+    for(int i=0; i<msg.arguments().length; i++){
+       map.add(msg.get(i).intValue());
+     }
+  }
+  else if(addr.equals(SPEED_OSC_ADDRESS)){
+    speed = msg.get(0).floatValue();
+  }
   
-  
-  //if( addr.equals(BLOB_OSCADDRESS) )
-  //{
-  //  for(int i=0; i<msg.arguments().length; i+=numberOfParamsPerMessage)
-  //  {
-  //    float id = msg.get(i).floatValue(); 
-  //    float x =  msg.get(i+1).floatValue(); 
-  //    float y =  msg.get(i+2).floatValue();
-  //    //your built-in sanity check. 
-  //    println(id+"," +"x" +"'"+ y);
-  //    addToBlobs(id, x, y);
-  //  }
-  //  println("**************");
-  //}
+  else if(addr.equals(BLOB_OSC_ADDRESS) )
+  {
+    //for(int i=0; i<msg.arguments().length; i+=numberOfParamsPerMessage)
+    //{
+      float id = msg.get(0).floatValue(); 
+      float x =  msg.get(1).floatValue(); 
+      float y =  msg.get(2).floatValue();
+      //your built-in sanity check. 
+      addToBlobs(id, x, y);
+  }
+ 
 }
 
 //add to blobs or update existing blobs if they are found
@@ -134,6 +165,7 @@ void addToBlobs(float id, float x, float y)
     blobs.get(index).update(id, x, y);
   }
 }
+
 
 void drawBlobs()
 {
@@ -162,15 +194,25 @@ void playBlobs(float timeBetween)
 //also deletes old blobs that haven't been updated in a while (killBlobs)
 void draw()
 {
-  background(255); 
+  background(0);
   float timeBetween =  millis()-lastPlayed; //time between last time it was played, 
   //basically quantizing everything to a quarter second beat, since I only play every 1/4 second
   //if tempo is 120bpm, then it is playing every 16th note if there are new blobs.
   playBlobs(timeBetween);
-  println("Position: "+x+ "|",y);
-  println("Down Value: " + downValue);
-  println("**************");
+ 
   
+  noStroke();
+  zdiff = map(mouseX, 0, width, 0, 1);
+  for(float y = 0; y < height; y+=pSize){
+    for(float x = 0; x < width; x+=pSize){
+      fill(abs(noise(x/nScale, y/nScale, zoff)-noise(x/nScale, y/nScale, zoff+zdiff))*255*2);
+      
+      //fill(noise(x/nScale, y/nScale, zoff)*255);
+      //rect(x, y, pSize, pSize);
+    }
+  }
+  zoff += 0.01;
+  //drawBlobs();
   drawBlobs();
   ageBlobs();
   killBlobs();
