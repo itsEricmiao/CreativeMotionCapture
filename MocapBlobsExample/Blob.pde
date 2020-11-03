@@ -45,15 +45,18 @@ class Blob
   //draw the whole blob history
   void draw()
   {
-    stroke(0); 
-    dtrans = -0.01;
+    float dtrans = -1;
     for(int j=0; j<x().size(); j++){
-      //fill(abs(noise(x/nScale, y/nScale, zoff)-noise(x/nScale, y/nScale, zoff+zdiff))*255*2);
-      //x().get(j), y().get(j)
-      float a = map(transparency, 0, 1, 0, 255);
-      fill(0, 0, 255, a);
-      ellipse(x().get(j), y().get(j), 150, 150);
-      transparency += dtrans;
+      float xPos = x().get(j);
+      float yPos = y().get(j);
+      float ratio = xPos/(float)(x().size());
+      float spiral_rad = ratio * plot_radius;
+      float angle = xPos*yPos*angle_incr;
+      x = cos(angle) * spiral_rad;
+      y = sin(angle) * spiral_rad;
+      
+      ellipse(x,y,circle_diameter+speed/100,circle_diameter+speed/100);
+      dtrans = dtrans - 0.1;
     }
   }
   

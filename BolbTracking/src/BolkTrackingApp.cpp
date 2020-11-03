@@ -380,8 +380,6 @@ void BlobTrackingApp::update()
     blobTracking();
     getSpeed();
     updateBlobList();
-    
-    
 }
 
 

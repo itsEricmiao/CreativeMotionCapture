@@ -7,14 +7,21 @@ import netP5.*;
 import oscP5.*;
 import ddf.minim.*;
 import ddf.minim.ugens.*;
+import processing.sound.*;
+SoundFile file;
 
 float speed = 0;
-float nScale = 50;
-float pSize = 50;
-float zoff = 0;
-float zdiff = 0;
 
 
+int number_of_points = 0;
+boolean grow = true;
+int circle_diameter = 5;
+float plot_radius = 200;
+float angle_incr = radians(0);
+
+color c1 = color(204, 102, 0);
+color c2 = color(204, 153, 0);
+color c3 = color(153, 51, 0);
 
 Minim minim; //the minimum object
 AudioOutput out; //our audio out
@@ -95,19 +102,14 @@ void killBlobs()
 //sets up OSC & the sound library Minim
 void setup()
 {
-  frameRate(10);
   size(640, 480); //NOTE: I made the size of the screen match the size of the C++ screen so I don't calculate anything extra. 
-  background(255);  
-  
+  fill(0); 
+  smooth(10);
+  file = new SoundFile(this, "music.mp3");
+  file.play();
   //initialize OSC
   oscP5 = new OscP5(this, LISTENING_PORT); //listening for incoming!!
-  
-  //init the minim
-  minim = new Minim(this);
-  
-  //copied from Minin example -- see the Sine Instrument tab for details
-  // use the getLineOut method of the Minim object to get an AudioOutput object
-  out = minim.getLineOut();
+ 
 }
 
 //this is the overloaded function to receive our OSC message 
@@ -115,7 +117,6 @@ void oscEvent(OscMessage msg)
 {
   String addr = msg.addrPattern(); //get the address
   
-  int numberOfParamsPerMessage = 4; //change this number depending on how many features you send per blob
   if(addr.equals(PREVB_OSC_ADDRESS)){
      float prev_X = msg.get(0).floatValue(); 
      float prev_Y = msg.get(1).floatValue(); 
@@ -194,26 +195,26 @@ void playBlobs(float timeBetween)
 //also deletes old blobs that haven't been updated in a while (killBlobs)
 void draw()
 {
-  background(0);
-  float timeBetween =  millis()-lastPlayed; //time between last time it was played, 
-  //basically quantizing everything to a quarter second beat, since I only play every 1/4 second
-  //if tempo is 120bpm, then it is playing every 16th note if there are new blobs.
-  playBlobs(timeBetween);
- 
-  
-  noStroke();
-  zdiff = map(mouseX, 0, width, 0, 1);
-  for(float y = 0; y < height; y+=pSize){
-    for(float x = 0; x < width; x+=pSize){
-      fill(abs(noise(x/nScale, y/nScale, zoff)-noise(x/nScale, y/nScale, zoff+zdiff))*255*2);
-      
-      //fill(noise(x/nScale, y/nScale, zoff)*255);
-      //rect(x, y, pSize, pSize);
+  background(51, 0, 0);
+  translate(width/2, height/2);
+  rotate(radians(number_of_points));
+  angle_incr = radians(25);
+  if(number_of_points > 2000) { grow = false; background(c1); fill(c2);}
+  if(number_of_points == 0) { grow=true; background(c2); fill(c3); }
+  if(grow == true){
+      number_of_points++; 
     }
-  }
-  zoff += 0.01;
-  //drawBlobs();
+  else{
+    number_of_points--;
+    }
+  
   drawBlobs();
   ageBlobs();
   killBlobs();
+   
+  //float timeBetween =  millis()-lastPlayed; //time between last time it was played, 
+  //basically quantizing everything to a quarter second beat, since I only play every 1/4 second
+  //if tempo is 120bpm, then it is playing every 16th note if there are new blobs.
+  //playBlobs(timeBetween);
+  
 }
