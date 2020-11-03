@@ -11,17 +11,11 @@ import processing.sound.*;
 SoundFile file;
 
 float speed = 0;
+int mouse = 0;
+int number_blobs = 0; // keep on track of the number of blobs on the screen
+boolean direction = true;
 
 
-int number_of_points = 0;
-boolean grow = true;
-int circle_diameter = 5;
-float plot_radius = 200;
-float angle_incr = radians(0);
-
-color c1 = color(204, 102, 0);
-color c2 = color(204, 153, 0);
-color c3 = color(153, 51, 0);
 
 Minim minim; //the minimum object
 AudioOutput out; //our audio out
@@ -31,11 +25,18 @@ OscP5 oscP5; //the object that will send OSC
 NetAddress remoteLocation; //where we are receiving OSC from
 
 float downValue; //is the mouse down?
+int snap;
 
 //where the mouse is on the screen in %, that is 0.-1.0
 float x; 
 float y; 
 int size;
+
+// define some color I will be using in the program
+color c1 = color(204, 102, 0);
+color c2 = color(204, 153, 0);
+color c3 = color(153, 51, 0);
+color c4 = color(153, 51, 0);
 
 //the OSC addresses we are receiving
 //MUST match what we are sending
@@ -46,7 +47,7 @@ final String SIZE_OSC_ADDRESS = "/MakeItArt/Size";
 final String PREVB_OSC_ADDRESS = "/MakeItArt/PrevBlobs"; 
 final String MAP_OSC_ADDRESS = "/MakeItArt/Map";
 final String SPEED_OSC_ADDRESS = "/MakeItArt/Speed";
-
+final String SNAP_OSC_ADDRESS = "/MakeItArt/Snap";
 //The port we are listening to... MUST match DESTPORT in the C++ example 
 final int LISTENING_PORT = 8888;
 
@@ -128,6 +129,11 @@ void oscEvent(OscMessage msg)
     size = msg.get(0).intValue();
   }
   
+  else if(addr.equals(SNAP_OSC_ADDRESS)){
+    snap = msg.get(0).intValue();
+    println("snap = ", snap);
+  }
+  
   else if(addr.equals(MAP_OSC_ADDRESS)){
     for(int i=0; i<msg.arguments().length; i++){
        map.add(msg.get(i).intValue());
@@ -197,24 +203,27 @@ void draw()
 {
   background(51, 0, 0);
   translate(width/2, height/2);
-  rotate(radians(number_of_points));
-  angle_incr = radians(25);
-  if(number_of_points > 2000) { grow = false; background(c1); fill(c2);}
-  if(number_of_points == 0) { grow=true; background(c2); fill(c3); }
-  if(grow == true){
-      number_of_points++; 
+  rotate(radians(number_blobs));
+  
+  if(mouse == 1) { direction = false; background(c1); fill(c3);}
+  if(mouse == 0) { direction = false; background(c2); fill(c1); }
+  if(snap == 1) { direction = true;}
+  if(direction == true){
+      number_blobs++; 
     }
   else{
-    number_of_points--;
+    number_blobs--;
     }
-  
+  noStroke();
   drawBlobs();
   ageBlobs();
   killBlobs();
-   
-  //float timeBetween =  millis()-lastPlayed; //time between last time it was played, 
-  //basically quantizing everything to a quarter second beat, since I only play every 1/4 second
-  //if tempo is 120bpm, then it is playing every 16th note if there are new blobs.
-  //playBlobs(timeBetween);
-  
+}
+
+void mousePressed() {
+  if (mouse == 0) {
+    mouse = 1;
+  } else {
+    mouse = 0;
+  }
 }

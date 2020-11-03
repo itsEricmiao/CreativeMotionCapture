@@ -65,6 +65,7 @@ using namespace std;
 #define PREVB_OSC_ADDRESS "/MakeItArt/PrevBlobs"
 #define MAP_OSC_ADDRESS "/MakeItArt/Map"
 #define SPEED_OSC_ADDRESS "/MakeItArt/Speed"
+#define SNAP_OSC_ADDRESS "/MakeItArt/Snap"
 
 class BlobTrackingApp : public App {
 public:
@@ -113,6 +114,7 @@ protected:
     int newBlobID; //the id to assign a new blob.
     void getSpeed();
     float speed;
+    int snap;
     
     osc::SenderUdp                mSender; //sends the OSC via the UDP protocol
     void sendOSC(std::string addr, float x, float y); //sending the OSC values
@@ -370,7 +372,7 @@ void BlobTrackingApp::update()
     }
     sendOSC(MAP_OSC_ADDRESS, mMapPrevToCurKeypoints);
     sendOSC(SPEED_OSC_ADDRESS, speed);
-    
+    sendOSC(SNAP_OSC_ADDRESS, snap);
     //update all our blob info
     blobDetection(mUseBackgroundSubtraction);
     
@@ -396,6 +398,15 @@ void BlobTrackingApp::blobTracking(){
             if(distance <= MINDIS && distance < min){
                 min = distance;
                 index = i;
+            }
+            cout<<"distance: "<<distance<<endl;
+            if(distance > 650){
+                if(snap == 1){
+                    snap = 0;
+                }
+                else{
+                    snap = 1;
+                }
             }
         }
         if(index != -1){

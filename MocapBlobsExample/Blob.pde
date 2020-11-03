@@ -14,8 +14,9 @@ class Blob
   float blobsID = 0; //the id from C++ -- you don't really need this here bc its in a list in the main, BUT good to have for debugging just in case!!
   int blobsAlive = 0; //when was it last updated?
   float transparency = 1;
-  float dtrans;
-
+  float radius = 400;
+  float angle_norms = radians(1);
+  
   //create with this info.
   Blob(float id, float x, float y)
   {
@@ -45,18 +46,15 @@ class Blob
   //draw the whole blob history
   void draw()
   {
-    float dtrans = -1;
     for(int j=0; j<x().size(); j++){
       float xPos = x().get(j);
       float yPos = y().get(j);
-      float ratio = xPos/(float)(x().size());
-      float spiral_rad = ratio * plot_radius;
-      float angle = xPos*yPos*angle_incr;
+      float ratio = xPos/(x().size());
+      float spiral_rad = ratio * radius;
+      float angle = xPos * yPos * angle_norms;
       x = cos(angle) * spiral_rad;
       y = sin(angle) * spiral_rad;
-      
-      ellipse(x,y,circle_diameter+speed/100,circle_diameter+speed/100);
-      dtrans = dtrans - 0.1;
+      ellipse(x,y,size+speed/50,size+speed/50);
     }
   }
   
@@ -79,10 +77,4 @@ class Blob
   {
     blobsAlive=1;
   }
-  
-
-  
-
-
-
 }
