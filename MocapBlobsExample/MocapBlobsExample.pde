@@ -1,8 +1,14 @@
-//Programmer: Courtney Brown
-//Desc: Demonstrates receiving blob features
-//Desc: Receives OSC and uses value to play a musical instrument & draw a blob.
+//Programmer: Eric Miao
 //Date: Oct. 2020
 
+
+/*I got inspired by the intro of Star Wars movies. 
+  I decided to visualize all the blobs in a creative way. 
+  The position each ‘star’ generated is based on the x, y positions of the blobs,but also I normalized both x,y values to help the visualization. 
+  Besides, I set the color and transparency based on the speed of the blobs. It helps create a visual effect of twinkling. 
+  In addition, the program uses the snap value to determine the rotation direction of the blobs. 
+  If you quickly swing you arm, the program will capture that movement and send a signal to change the direction of the rotation. 
+*/
 import netP5.*;
 import oscP5.*;
 import ddf.minim.*;
