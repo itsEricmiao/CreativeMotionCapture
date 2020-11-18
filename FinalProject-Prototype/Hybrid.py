@@ -3,7 +3,6 @@ import sys
 import cv2 as cv
 import numpy as np
 
-
 def print_help():
     print('''
     This program demonstrated the use of the discrete Fourier transform (DFT).
