@@ -14,7 +14,7 @@ def print_help():
 def main(argv):
     print_help()
     filename = "image.jpg"
-    I = cv.imread(cv.samples.findFile(filename), cv.IMREAD_GRAYSCALE)
+    I = cv.imread(filename, cv.IMREAD_GRAYSCALE)
     if I is None:
         print('Error opening image')
         return -1
