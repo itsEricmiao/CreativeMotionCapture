@@ -13,7 +13,7 @@ def print_help():
 
 def main(argv):
     print_help()
-    filename = "image.jpg"
+    filename = "image1.jpg"
     I = cv.imread(filename, cv.IMREAD_GRAYSCALE)
     if I is None:
         print('Error opening image')

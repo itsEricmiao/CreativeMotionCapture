@@ -1,6 +1,5 @@
 import cv2
 
-
 cascPath = "haarcascades/haarcascade_frontalface_default.xml"
 eyePath = "haarcascades/haarcascade_eye.xml"
 smilePath = "haarcascades/haarcascade_smile.xml"
@@ -50,7 +49,7 @@ while True:
         cv2.rectangle(roi_color,(ex,ey),(ex+ew,ey+eh),(0,255,0),2)
         cv2.putText(frame,'Eye',(x + ex,y + ey), 1, 1, (0, 255, 0), 1)
 
-    cv2.putText(frame,'Number of Faces : ' + str(len(faces)),(40, 40), font, 1,(255,0,0),2)
+    cv2.putText(frame,'Number of Faces Detected: ' + str(len(faces)),(40, 40), font, 1,(255,0,0),2)
     # Display the resulting frame
     cv2.imshow('Video', frame)
 
