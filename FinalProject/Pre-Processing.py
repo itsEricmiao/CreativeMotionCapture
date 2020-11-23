@@ -1,12 +1,9 @@
-from os import listdir
-from os.path import isfile, join
 from Utilities import *
-
 mypath = "funny"
 
 # https://stackoverflow.com/questions/51166970/how-can-i-check-if-only-txt-file-exists-in-a-directory-with-python
-if __name__ == '__main__' :
 
+if __name__ == '__main__' :
     onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f))]
 
     for each in onlyfiles:
