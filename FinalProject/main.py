@@ -1,35 +1,20 @@
 from cv2 import CV_64FC3, CV_64F, CV_8UC3
 from StaticHybrid import *
 from Utilities import *
-
-mypath = "funny"
+from FeatureTracking import *
+mypath = "images"
 hybridpath = "hybrid"
 
 def interface():
     print("Welcome to Hybrid Image Program")
-    print("Press 1: Face Swapping")
-    print("Press 2: Static Hybrid Image")
+    print("Press 1: Face and Feature Trackings")
+    print("Press 2: Face Swapping")
+    print("Press 3: Static Hybrid Image")
     option = int(input("Enter your value: "))
-    if option == 2:
-        print("Below are a few images you can choose from: ")
-
-        counter = 1;
-        files = findFiles(hybridpath)
-        for each in files:
-            print(counter, " : ", each)
-            counter = counter + 1
-        val1 = int(input("Enter your image 1: "))
-        val2 = int(input("Enter your image 2: "))
-        if (val1 < 0 or val1 > counter or val2 < 0 or val2 > counter):
-            print("INVALID INPUT")
-            interface()
-        else:
-            filename1 = str(hybridpath) + "/" + str(files[val1-1])
-            filename2 = str(hybridpath) + "/" + str(files[val2-1])
-            hybrid_image(filename1, filename2)
+    if option == 1:
+        feature_tracking()
         return "no"
-
-    elif option == 1:
+    elif option == 2:
         print("Below are a few images you can choose from: ")
         counter = 1;
         files = findFiles(mypath)
@@ -41,13 +26,43 @@ def interface():
             print("INVALID INPUT")
             interface()
         else:
-            filename = str(mypath) + "/" + str(files[val-1])
+            filename = str(mypath) + "/" + str(files[val - 1])
         return filename
+
+    elif option == 3:
+        print("Below are a few images you can choose from: ")
+        counter = 1;
+        files = findFiles(hybridpath)
+        for each in files:
+            print(counter, " : ", each)
+            counter = counter + 1
+        val1 = int(input("Enter your image 1: "))
+        val2 = int(input("Enter your image 2: "))
+        if (val1 < 0 or val1 > counter or val2 < 0 or val2 > counter):
+            print("INVALID INPUT")
+            interface()
+        else:
+            filename1 = str(hybridpath) + "/" + str(files[val1 - 1])
+            filename2 = str(hybridpath) + "/" + str(files[val2 - 1])
+            hybrid_image(filename1, filename2)
+        return "no"
+
     else:
         print("INVALID INPUT")
         interface()
 
 if __name__ == '__main__' :
+    background = cv2.imread("background.jpeg")
+    font = cv2.FONT_HERSHEY_SIMPLEX
+    row = 720
+    col = 1280
+    background = cv2.resize(background, (col, row))
+    cv2.putText(background, 'Welcome to Hybrid Image Program', (40, 40), font, 1, (255, 255, 255), 2)
+    cv2.putText(background, 'Press 1: Face and Features Tracking', (40, 80), font, 1, (255, 255, 255), 2)
+    cv2.putText(background, 'Press 2: Face Swapping', (40, 120), font, 1, (255, 255, 255), 2)
+    cv2.putText(background, 'Press 3: Show Hybrid Images', (40, 160), font, 1, (255, 255, 255), 2)
+    cv2.imshow("App", background)
+    cv2.waitKey(0)
     filename = interface()
     if filename == "no":
         exit(0)

@@ -1,5 +1,5 @@
 from Utilities import *
-mypath = "funny"
+mypath = "images"
 
 # https://stackoverflow.com/questions/51166970/how-can-i-check-if-only-txt-file-exists-in-a-directory-with-python
 
