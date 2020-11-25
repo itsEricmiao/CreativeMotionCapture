@@ -16,7 +16,7 @@ def findFiles(path):
             newfiles.append(each)
     return newfiles
 
-# Read points from text file
+# Read points from .txt file
 def readPoints(path) :
     # Create an array of points.
     points = [];
@@ -37,14 +37,7 @@ def detect_face(image):
     return gray, rects
 
 def landmark_detection(gray, rects):
-    if len(rects) >= 2:
-        points1 = face_utils.shape_to_np(predictor(gray, rects[0])).tolist()
-        points2 = face_utils.shape_to_np(predictor(gray, rects[1])).tolist()
-
-        points1 = [(int(i[0]), int(i[1])) for i in points1]
-        points2 = [(int(i[0]), int(i[1])) for i in points2]
-        return points1, points2
-    elif len(rects) == 1:
+    if len(rects) == 1:
         points1 = face_utils.shape_to_np(predictor(gray, rects[0])).astype(np.int32).tolist()
         points1 = [(int(i[0]), int(i[1])) for i in points1]
         return points1, points1
@@ -55,16 +48,13 @@ def landmark_detection(gray, rects):
 def extract_points(img):
     return readPoints(img + '.txt')
 
-# Apply affine transform calculated using srcTri and dstTri to src and
-# output an image of size.
+# Apply affine transform calculated using srcTri and dstTri to src and output an image of size.
 def applyAffineTransform(src, srcTri, dstTri, size) :
 
     # Given a pair of triangles, find the affine transform.
     warpMat = cv2.getAffineTransform( np.float32(srcTri), np.float32(dstTri) )
-
     # Apply the Affine Transform just found to the src image
     dst = cv2.warpAffine( src, warpMat, (size[0], size[1]), None, flags=cv2.INTER_LINEAR, borderMode=cv2.BORDER_REFLECT_101 )
-
     return dst
 
 # Check if a point is inside a rectangle
@@ -82,13 +72,10 @@ def rectContains(rect, point) :
 #calculate delanauy triangle
 def calculateDelaunayTriangles(rect, points):
     subdiv = cv2.Subdiv2D(rect);
-
     # Insert points into subdiv
     for p in points:
         subdiv.insert(p)
-
     triangleList = subdiv.getTriangleList();
-
     delaunayTri = []
 
     pt = []
@@ -109,10 +96,9 @@ def calculateDelaunayTriangles(rect, points):
                 for k in range(0, len(points)):
                     if(abs(pt[j][0] - points[k][0]) < 1.0 and abs(pt[j][1] - points[k][1]) < 1.0):
                         ind.append(k)
-            # Three points form a triangle. Triangle array corresponds to the .txt files
+            # Three points form a triangle. Triangle array corresponds to the .txt files we pre-processed
             if len(ind) == 3:
                 delaunayTri.append((ind[0], ind[1], ind[2]))
-
         pt = []
 
 
@@ -143,7 +129,6 @@ def warpTriangle(img1, img2, t1, t2) :
 
     # Apply warpImage to small rectangular patches
     img1Rect = img1[r1[1]:r1[1] + r1[3], r1[0]:r1[0] + r1[2]]
-    #img2Rect = np.zeros((r2[3], r2[2]), dtype = img1Rect.dtype)
 
     size = (r2[2], r2[3])
 
@@ -153,7 +138,6 @@ def warpTriangle(img1, img2, t1, t2) :
 
     # Copy triangular region of the rectangular patch to the output image
     img2[r2[1]:r2[1]+r2[3], r2[0]:r2[0]+r2[2]] = img2[r2[1]:r2[1]+r2[3], r2[0]:r2[0]+r2[2]] * ( (1.0, 1.0, 1.0) - mask )
-
     img2[r2[1]:r2[1]+r2[3], r2[0]:r2[0]+r2[2]] = img2[r2[1]:r2[1]+r2[3], r2[0]:r2[0]+r2[2]] + img2Rect
 
 
