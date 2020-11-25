@@ -2,9 +2,12 @@ from cv2 import CV_64FC3, CV_64F, CV_8UC3
 from StaticHybrid import *
 from Utilities import *
 from FeatureTracking import *
-mypath = "images"
+mypath = "funny"
 hybridpath = "hybrid"
 
+# Reference: http://dlib.net/face_landmark_detection.py.html
+# https://towardsdatascience.com/facial-mapping-landmarks-with-dlib-python-160abcf7d672
+# https://rajathithanrajasekar.medium.com/opencv-series-4-dlib-68-point-face-landmark-prediction-172cb867c869
 def interface():
     print("Welcome to Hybrid Image Program")
     print("Press 1: Face and Feature Trackings")
@@ -79,14 +82,7 @@ if __name__ == '__main__' :
             filename2 = filename
             img2 = cv2.imread(filename2);
             points2 = readPoints(filename + '.txt')
-            # print("Opening image file: ", filename2)
-            # print("Opening feature file: ", filename + '.txt')
             output = swap_images(img2, img, points2, points1)
-            cv2.imshow("Face Swapped", output)
-        elif len(rects) == 2:
-            points1, points2 = landmark_detection(gray, rects)
-            output = swap_images(img, img, points2, points1)
-            output = swap_images(img, output, points1, points2)
             cv2.imshow("Face Swapped", output)
         else:
             cv2.imshow("Face Swapped", img)

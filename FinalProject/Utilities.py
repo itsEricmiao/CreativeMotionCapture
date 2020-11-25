@@ -5,6 +5,9 @@ from os.path import isfile, join
 import numpy as np
 import cv2
 
+detector = dlib.get_frontal_face_detector()
+predictor = dlib.shape_predictor('lib/shape_predictor_68_face_landmarks.dat')
+
 def findFiles(path):
     newfiles = list()
     onlyfiles = [f for f in listdir(path) if isfile(join(path, f))]
@@ -25,13 +28,11 @@ def readPoints(path) :
     return points
 
 
-detector = dlib.get_frontal_face_detector()
-predictor = dlib.shape_predictor('lib/shape_predictor_68_face_landmarks.dat')
+
 
 def detect_face(image):
-    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-
     # detect faces in the grayscale image
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     rects = detector(gray, 1)
     return gray, rects
 
@@ -80,7 +81,6 @@ def rectContains(rect, point) :
 
 #calculate delanauy triangle
 def calculateDelaunayTriangles(rect, points):
-    #create subdiv
     subdiv = cv2.Subdiv2D(rect);
 
     # Insert points into subdiv
@@ -109,7 +109,7 @@ def calculateDelaunayTriangles(rect, points):
                 for k in range(0, len(points)):
                     if(abs(pt[j][0] - points[k][0]) < 1.0 and abs(pt[j][1] - points[k][1]) < 1.0):
                         ind.append(k)
-            # Three points form a triangle. Triangle array corresponds to the file tri.txt in FaceMorph
+            # Three points form a triangle. Triangle array corresponds to the .txt files
             if len(ind) == 3:
                 delaunayTri.append((ind[0], ind[1], ind[2]))
 
@@ -160,7 +160,6 @@ def warpTriangle(img1, img2, t1, t2) :
 
 def swap_images(img1, img2, points1, points2):
     img1Warped = np.copy(img2);
-    #Find convex hull
     hull1 = []
     hull2 = []
 
