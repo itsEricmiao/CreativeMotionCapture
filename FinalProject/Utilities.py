@@ -16,11 +16,10 @@ def findFiles(path):
             newfiles.append(each)
     return newfiles
 
-# Read points from .txt file
+# Read 48 feature points from .txt file
 def readPoints(path) :
     # Create an array of points.
     points = [];
-    # Read points
     with open(path) as file :
         for line in file :
             x, y = line.split()
@@ -36,6 +35,7 @@ def detect_face(image):
     rects = detector(gray, 1)
     return gray, rects
 
+# detection using dlib landmark detector
 def landmark_detection(gray, rects):
     if len(rects) == 1:
         points1 = face_utils.shape_to_np(predictor(gray, rects[0])).astype(np.int32).tolist()
@@ -100,8 +100,6 @@ def calculateDelaunayTriangles(rect, points):
             if len(ind) == 3:
                 delaunayTri.append((ind[0], ind[1], ind[2]))
         pt = []
-
-
     return delaunayTri
 
 
@@ -141,7 +139,7 @@ def warpTriangle(img1, img2, t1, t2) :
     img2[r2[1]:r2[1]+r2[3], r2[0]:r2[0]+r2[2]] = img2[r2[1]:r2[1]+r2[3], r2[0]:r2[0]+r2[2]] + img2Rect
 
 
-
+# swap 2 images based on feature points
 def swap_images(img1, img2, points1, points2):
     img1Warped = np.copy(img2);
     hull1 = []

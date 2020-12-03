@@ -1,13 +1,19 @@
+# Some Reference:
+# http://dlib.net/face_landmark_detection.py.html
+# https://towardsdatascience.com/facial-mapping-landmarks-with-dlib-python-160abcf7d672
+# https://rajathithanrajasekar.medium.com/opencv-series-4-dlib-68-point-face-landmark-prediction-172cb867c869
+
 from cv2 import CV_64FC3, CV_64F, CV_8UC3
 from StaticHybrid import *
 from Utilities import *
 from FeatureTracking import *
-mypath = "funny"
-hybridpath = "hybrid"
 
-# Reference: http://dlib.net/face_landmark_detection.py.html
-# https://towardsdatascience.com/facial-mapping-landmarks-with-dlib-python-160abcf7d672
-# https://rajathithanrajasekar.medium.com/opencv-series-4-dlib-68-point-face-landmark-prediction-172cb867c869
+# relative file path to my images
+funnypath = "funny"
+hybridpath = "hybrid"
+imagepath = "images"
+
+# user interface (it is bad I know...)
 def interface():
     print("Welcome to Hybrid Image Program")
     print("Press 1: Face and Feature Trackings")
@@ -18,9 +24,18 @@ def interface():
         feature_tracking()
         return "no"
     elif option == 2:
+        print("Please select image category:")
+        print("1: Celebrities")
+        print("2: Funny")
+        opt = int(input("Enter your value: "))
+        if opt == 1:
+            path = imagepath
+        elif opt == 2:
+            path = funnypath
         print("Below are a few images you can choose from: ")
+
         counter = 1;
-        files = findFiles(mypath)
+        files = findFiles(path)
         for each in files:
             print(counter, " : ", each)
             counter = counter + 1
@@ -29,7 +44,7 @@ def interface():
             print("INVALID INPUT")
             interface()
         else:
-            filename = str(mypath) + "/" + str(files[val - 1])
+            filename = str(path) + "/" + str(files[val - 1])
         return filename
 
     elif option == 3:
@@ -71,7 +86,6 @@ if __name__ == '__main__' :
         exit(0)
     # Read images
     cap = cv2.VideoCapture(0)
-    mypath = "data"
     while(True):
     # Capture frame-by-frame
         ret, img = cap.read()
@@ -86,7 +100,7 @@ if __name__ == '__main__' :
             cv2.imshow("Face Swapped", output)
         else:
             cv2.imshow("Face Swapped", img)
-
+        # press q to exit
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
 
